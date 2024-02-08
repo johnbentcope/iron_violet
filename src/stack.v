@@ -6,15 +6,13 @@
 //-------------------------------------------------------------------
 // 
 // Module       : Stack
-// Description  : So like, there's no need for an almost full signal.
-//                Could halve the width and decode 2 to 4 each time
-//                or not. Idk how much that takes up. halving the width
-//                saves 64 bits of memory space, ~6% of the gates?
+// Description  : No almost full/almost empty because meat is slow.
+//                Data will need decoding because regs are expensive
 //
 //-------------------------------------------------------------------
 
 module stack #(
-      parameter DATA_WIDTH = 4,
+      parameter DATA_WIDTH = 2,
       parameter DEPTH = 32
   ) (
       input CLK,
