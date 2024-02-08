@@ -17,46 +17,46 @@ module stack #(
       parameter DATA_WIDTH = 4,
       parameter DEPTH = 32
   ) (
-      input clk,
-      input rst,
-      input push,
-      input pop,
-      input [DATA_WIDTH-1:0] data_in,
-      output reg [DATA_WIDTH-1:0] data_out,
-      output reg full,
-      output reg empty
+      input CLK,
+      input RST_N,
+      input PUSH,
+      input POP,
+      input [DATA_WIDTH-1:0] DATA_IN,
+      output reg [DATA_WIDTH-1:0] DATA_OUT,
+      output reg FULL,
+      output reg EMPTY
   );
 
   reg [5-1:0] ptr;
 
   // It's like a state machine eyyyy
-  always @(posedge clk) begin
-      if (rst) begin
+  always @(posedge CLK) begin
+      if (!RST_N) begin
           ptr           <= 0;
-          data_out      <= 0;
-          full          <= 0;
-          empty         <= 1;
+          DATA_OUT      <= 0;
+          FULL          <= 0;
+          EMPTY         <= 1;
 
       end else begin
-          if (push & !full) begin
+          if (PUSH & !FULL) begin
               ptr       <= ptr + 1;
-              data_out  <= data_in;
-              full      <= (ptr == DEPTH - 1);
-              empty     <= 0;
-          end else if (pop & !empty) begin
+              DATA_OUT  <= DATA_IN;
+              FULL      <= (ptr == DEPTH - 1);
+              EMPTY     <= 0;
+          end else if (POP & !EMPTY) begin
               ptr       <= ptr - 1;
-              data_out  <= stack[ptr];
-              full      <= 0;
-              empty     <= (ptr == 0);
+              DATA_OUT  <= stack[ptr];
+              FULL      <= 0;
+              EMPTY     <= (ptr == 0);
           end
       end
   end
 
   reg [DATA_WIDTH-1:0] stack [DEPTH-1:0];
 
-  always @(posedge clk) begin
-      if (push & !full) begin
-          stack[ptr] <= data_in;
+  always @(posedge CLK) begin
+      if (PUSH & !FULL) begin
+          stack[ptr] <= DATA_IN;
       end
   end
 
