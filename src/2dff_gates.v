@@ -20,7 +20,7 @@ module 2dff_gates (
     reg d_int;
 
     // dffs
-    dff_gates_u0 (
+    dff_gates dff_gates_u0 (
         .clk   (clk),
         .rst_n (rst_n),
         .d     (async_in),
@@ -28,7 +28,7 @@ module 2dff_gates (
         .q_bar (/*open*/)
     ); 
     
-    dff_gates_u1 (
+    dff_gates dff_gates_u1 (
         .clk   (clk),
         .rst_n (rst_n),
         .d     (d_int),
