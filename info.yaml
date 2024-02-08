@@ -1,6 +1,6 @@
 # Tiny Tapeout project information
 project:
-  title:        "IronV iolet"      # Project title
+  title:        "Iron Violet"      # Project title
   author:       "John Cope"      # Your name
   discord:      "konekodrift"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "It's a little memory game, as a treat."      # One line description of what your project does
