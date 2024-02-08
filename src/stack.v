@@ -15,14 +15,14 @@ module stack #(
       parameter DATA_WIDTH = 2,
       parameter DEPTH = 32
   ) (
-      input CLK,
-      input RST_N,
-      input PUSH,
-      input POP,
-      input [DATA_WIDTH-1:0] DATA_IN,
+      input                       CLK,
+      input                       RST_N,
+      input                       PUSH,
+      input                       POP,
+      input      [DATA_WIDTH-1:0] DATA_IN,
       output reg [DATA_WIDTH-1:0] DATA_OUT,
-      output reg FULL,
-      output reg EMPTY
+      output reg                  FULL,
+      output reg                  EMPTY
   );
 
   // Verilog doesn't have clog2(), so don't try to use it.
