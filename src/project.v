@@ -21,4 +21,4 @@ module tt_um_example (
   assign uio_out = 0;
   assign uio_oe  = 0;
 
-endmodule
+endmodule : tt_um_example
