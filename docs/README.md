@@ -1,33 +1,42 @@
-Memory Game
+# Simon't
+
+Designing ASICs for fun and profit.
 
 ## 1. Concept and Overview
 
-This document outlines the requirements for an ASIC IP block designed to implement a memory game similar to Simon. The game involves the device playing a sequence of tones, and the player needs to repeat the sequence by pressing corresponding buttons.
+Simon involves the device playing a sequence of tones and lighting up associated button lamps, and the player needs to repeat the sequence by pressing corresponding buttons. It keeps a high score for as long as power is maintained. If you set a new high score you get happy music. If you fail to set the high score, you get sad sound. You get optimistic tune when you start a new game. A new game plays a tone/light for a half second, and you have to play it back within two seconds. The time for a move decreases at some rate TBD. When you play a correct note in a sequence, the timeout for "forget" death is reset. If you complete a sequence without death timeout, a PRNG picks a new buttonlamp for you to have to remember, and the game plays the full sequence in order with the new buttonlamp added at the end.
 
 ## 2. Design Requirements
 
 ### 2.1 State Machine:
 
-The state machine will control the overall flow of the game, transitioning between states like:
-+ Start: Game initialization, waiting for player input.
-+ Playing Sequence: Device plays a AV sequence with a short delay between each tone.
-+ Player Input: Player presses buttons, and the system checks their accuracy.
-+ Correct Move: If the player's move matches the sequence, advance to the next level.
-+ Incorrect Move: If the player makes a mistake, provide feedback (e.g., buzzer) and restart the current level.
-+ Game Over: After exceeding a predefined number of mistakes, the game ends.
-The state machine should be flexible to allow for future customization of game rules (e.g., variable sequence length, different difficulty levels).
+The state machine SHALL control the overall flow of the game, transitioning between states.
 
-### 2.2 Tone Generation:
+### 2.2 Digitally Controlled Oscillator:
 
-The IP block should include a tone generator capable of producing multiple distinct tones.
-The tones should be adjustable in frequency and duration to provide an engaging game play experience.
+The oscillator loads a frequency as a counter and outputs a square wave.
+
+It shall got a unique beep and boop to play for each button.
+
+It shall play a lil tune when you start a game
+
+It shall play a sad tune when you end a game and don't get a high score
+
+It shall play a success tune when you get a high score
+
 
 ### 2.3 Input Sampling and Debouncing:
 
-The design should include input sampling circuitry with Debouncing Flip-Flops (DFFs) and hysteresis to eliminate switch bounce and ensure clean button press detection.
+The design SHALL debounce input signals from button pins.
 
-### 2.4 Memory Stack:
+### 2.4 Internal Memory:
 
-Implement a stack to store the sequence of tones played by the device.
-The stack size should be 32 moves deep and 2 bits wide.
-Push and Pop operations on the stack should be efficient and reliable.
+The ASIC SHALL maintain a high score that clears upon power cycle
+
+### 2.5 User Interface:
+
+The ASIC SHALL provide four inputs for push-buttons.
+
+The ASIC SHALL provide four outputs for LEDs.
+
+The ASIC SHall provide an audio-out for a speaker.
