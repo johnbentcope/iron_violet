@@ -30,8 +30,8 @@ module stack #(
   // Verilog doesn't have clog2(), so don't try to use it.
   // Update the ptr width to be clog2(DEPTH) if DEPTH changes.
   // Or someone write a lil macro here to calculate it
-  reg [clog2(DEPTH):0] ptr;
-  reg [DATA_WIDTH-1:0] stack [DEPTH-1:0];
+  reg [clog2(DEPTH)-1:0] ptr;
+  reg [  DATA_WIDTH-1:0] stack [DEPTH-1:0];
 
   // It's like a state machine eyyyy
   always @(posedge CLK) begin
