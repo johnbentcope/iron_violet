@@ -26,10 +26,10 @@ module tt_um_example (
     .RST_N(rst_n),
     .PUSH(ui_in[7]),
     .POP(ui_in[6]),
-    .DATA_IN(ui_in[3:0]),
-    .DATA_OUT(ui_out[3:0]),
-    .FULL(ui_out[7]),
-    .EMPTY(ui_out[6])
+    .DATA_IN(ui_in[1:0]),
+    .DATA_OUT(uo_out[1:0]),
+    .FULL(uo_out[7]),
+    .EMPTY(uo_out[6])
   );
 
 endmodule : tt_um_example
