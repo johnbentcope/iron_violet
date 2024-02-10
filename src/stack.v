@@ -13,7 +13,7 @@
 
 module stack #(
       parameter DATA_WIDTH = 2,
-      parameter DEPTH = 16
+      parameter DEPTH = 32
   ) (
       input                       CLK,
       input                       RST_N,
