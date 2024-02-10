@@ -14,8 +14,8 @@
 `include "clog2_function.vh"
 
 module stack #(
-      parameter DATA_WIDTH = 1,
-      parameter DEPTH = 2
+      parameter DATA_WIDTH = 2,
+      parameter DEPTH = 16
   ) (
       input                       CLK,
       input                       RST_N,
