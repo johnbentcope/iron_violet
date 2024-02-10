@@ -6,7 +6,7 @@
 
 `define default_netname none
 
-module iron_violet_simon #(
+module tt_um_iron_violet_simon #(
   parameter DATA_WIDTH = 2,
   parameter DEPTH = 16
 )(
@@ -37,4 +37,4 @@ module iron_violet_simon #(
     .EMPTY(uo_out[6])
   );
 
-endmodule : iron_violet_simon
+endmodule : tt_um_iron_violet_simon

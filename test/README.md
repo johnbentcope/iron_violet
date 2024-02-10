@@ -5,7 +5,7 @@ This is a sample testbench for a Tiny Tapeout project. It uses [cocotb](https://
 ## Setting up
 
 1. Edit [Makefile](Makefile) and modify `PROJECT_SOURCES` to point to your Verilog files.
-2. ~Edit [tb.v](tb.v) and replace `iron_violet_simon` with your module name.~
+2. ~Edit [tb.v](tb.v) and replace `tt_um_iron_violet_simon` with your module name.~
 
 ## How to run
 

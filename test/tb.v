@@ -22,7 +22,7 @@ module tb ();
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
 
-  iron_violet_simon user_project (
+  tt_um_iron_violet_simon user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
