@@ -1,3 +1,6 @@
+`ifndef CLOG2_FUNC
+`define CLOG2_FUNC
+
 function integer clog2;
     input integer value;
           integer temp;
@@ -8,3 +11,4 @@ function integer clog2;
         end
     end
 endfunction
+`endif
