@@ -13,7 +13,7 @@
 
 module stack #(
       parameter DATA_WIDTH = 2,
-      parameter DEPTH = 32
+      parameter DEPTH = 16
   ) (
       input                       CLK,
       input                       RST_N,
@@ -28,7 +28,7 @@ module stack #(
   // Verilog doesn't have clog2(), so don't try to use it.
   // Update the ptr width to be clog2(DEPTH) if DEPTH changes.
   // Or someone write a lil macro here to calculate it
-  reg [           4:0] ptr;
+  reg [           3:0] ptr;
   reg [DATA_WIDTH-1:0] stack [DEPTH-1:0];
 
   // It's like a state machine eyyyy
