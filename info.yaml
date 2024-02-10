@@ -14,8 +14,9 @@ project:
   top_module:  "tt_um_example"
   
   # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
-  source_files:        
+  source_files:
     - "project.v"
+    - "stack.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
