@@ -21,7 +21,7 @@ module tt_um_example (
   assign uio_out = 0;
   assign uio_oe  = 0;
 
-  stack stack_i(){
+  stack #() stack_i (
     .CLK(clk),
     .RST_N(rst_n),
     .PUSH(ui_in[7]),
@@ -30,6 +30,6 @@ module tt_um_example (
     .DATA_OUT(ui_out[3:0]),
     .FULL(ui_out[7]),
     .EMPTY(ui_out[6])
-  };
+  );
 
 endmodule : tt_um_example

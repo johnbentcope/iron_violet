@@ -5,13 +5,13 @@
 
 `define default_netname none
 
-module oscillator(){
+module oscillator#()(
   input  wire       clk,    // Clock - 50MHz
   input  wire       rst_n,  // Reset_n - active low
   input  wire       load,   // Reset_n - active low
   input  wire [4:0] note,   // Note selection, maybe needs more bits
   output reg        speaker // Oscillator output
-};
+);
 
 reg [15: 0] oscillator_counter;
 
