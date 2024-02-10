@@ -18,7 +18,7 @@ module tt_um_example (
 
   // All output pins must be assigned. If not used, assign to 0.
   // assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uo_out[5:2]  = 0;
+  assign uo_out[5:1]  = 0;
   assign uio_out      = 0;
   assign uio_oe       = 0;
 
@@ -27,8 +27,8 @@ module tt_um_example (
     .RST_N(rst_n),
     .PUSH(ui_in[7]),
     .POP(ui_in[6]),
-    .DATA_IN(ui_in[1:0]),
-    .DATA_OUT(uo_out[1:0]),
+    .DATA_IN(ui_in[0:0]),
+    .DATA_OUT(uo_out[0:0]),
     .FULL(uo_out[7]),
     .EMPTY(uo_out[6])
   );
