@@ -56,7 +56,7 @@ module stack #(
 
         // I/O operations
         DATA_OUT   <= DATA_IN;
-        FULL       <= (ptr == (DEPTH - 1)[3:0]);
+        FULL       <= (ptr == 4'hF); // TODO un-hardcode this
         EMPTY      <= 0;
       end
       
