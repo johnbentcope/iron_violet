@@ -7,8 +7,9 @@
 `define default_netname none
 
 module tt_um_iron_violet_simon #(
-  parameter DATA_WIDTH = 2,
-  parameter DEPTH = 16
+  parameter CLK_FREQ    = 50_000_000_000, // 50 billion mHz aka 50 MHz
+  parameter DATA_WIDTH  = 2,
+  parameter DEPTH       = 16
 )(
   input  wire [7:0] ui_in,    // Dedicated inputs
   output wire [7:0] uo_out,   // Dedicated outputs
@@ -22,20 +23,27 @@ module tt_um_iron_violet_simon #(
 
   // All output pins must be assigned. If not used, assign to 0.
   // assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uo_out[5:2]  = 0;
+  assign uo_out[5:3]  = 0;
   assign uio_out      = 0;
   assign uio_oe       = 0;
 
 
   stack #() stack_i (
-    .CLK(clk),
-    .RST_N(rst_n),
-    .PUSH(ui_in[7]),
-    .POP(ui_in[6]),
-    .DATA_IN(ui_in[1:0]),
-    .DATA_OUT(uo_out[1:0]),
-    .FULL(uo_out[7]),
-    .EMPTY(uo_out[6])
+    .CLK      (clk        ),
+    .RST_N    (rst_n      ),
+    .PUSH     (ui_in [  7]),
+    .POP      (ui_in [  6]),
+    .DATA_IN  (ui_in [1:0]),
+    .DATA_OUT (uo_out[1:0]),
+    .FULL     (uo_out[  7]),
+    .EMPTY    (uo_out[  6])
+  );
+
+  oscillator #() osciillator_i (
+    .CLK      (clk        ),
+    .RST_N    (rst_n      ),
+    .NOTE_SEL (ui_in [3:2]),
+    .AUDIO    (uo_out[  2])
   );
 
 endmodule : tt_um_iron_violet_simon
