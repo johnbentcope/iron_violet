@@ -7,7 +7,7 @@
 `define default_netname none
 
 module tt_um_iron_violet_simon #(
-  parameter CLK_FREQ    = 50_000_000_000, // 50 billion mHz aka 50 MHz
+  // parameter CLK_FREQ    = 50_000_000_000, // 50 billion mHz aka 50 MHz
   parameter DATA_WIDTH  = 2,
   parameter DEPTH       = 16
 )(

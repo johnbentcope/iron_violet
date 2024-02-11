@@ -6,7 +6,7 @@
 `define default_netname none
 
 module oscillator#(
-  parameter CLK_FREQ = 50_000_000_000
+  // parameter CLK_FREQ = 50_000_000_000
 )(
   input  wire       CLK,      // Clock - 50MHz
   input  wire       RST_N,    // Reset_n - active low
