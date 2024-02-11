@@ -51,7 +51,7 @@ always @(posedge CLK or negedge RST_N) begin
 
   // Handle reset.
   if(!RST_N) begin
-    speaker             <=  0;
+    AUDIO               <=  0;
     oscillator_counter  <= '0;
     current_note        <= NOTE_SEL;
   end
