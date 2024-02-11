@@ -36,7 +36,7 @@ module stack #(
   // Synchnous stack management state machine with async reset
   // If not in reset, check for a push.
   // If there's no push, check for a pop.
-  always @(posedge CLK or negedge RST_N) begin
+  always @(posedge CLK) begin
     
     // Handle reset
     if (!RST_N) begin

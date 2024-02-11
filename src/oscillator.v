@@ -47,7 +47,7 @@ end
 // Only at when toggling the output should a new counter value be loaded.
 //-------------------------------------------------------------------
 
-always @(posedge CLK or negedge RST_N) begin
+always @(posedge CLK) begin
 
   // Handle reset.
   if(!RST_N) begin
