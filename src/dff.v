@@ -8,7 +8,7 @@
 //============================================================================//
 // Gate Level DFF (6 Gates!)
 //============================================================================//
-module dff_gates (
+module dff (
     // inputs
     input  wire clk,   // clock
     input  wire rst_n, // active-low reset
