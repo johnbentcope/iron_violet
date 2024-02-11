@@ -26,6 +26,7 @@ module tt_um_iron_violet_simon #(
   assign uio_out      = 0;
   assign uio_oe       = 0;
 
+
   stack #() stack_i (
     .CLK(clk),
     .RST_N(rst_n),
