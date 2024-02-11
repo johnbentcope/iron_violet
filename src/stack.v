@@ -33,37 +33,39 @@ module stack #(
   reg [clog2(DEPTH)-1:0] ptr;
   reg [  DATA_WIDTH-1:0] stack [DEPTH-1:0];
 
-  // It's like a state machine eyyyy
+  // Synchnous stack management state machine with async reset
+  // If not in reset, check for a push.
+  // If there's no push, check for a pop.
   always @(posedge CLK) begin
-      
-      // Handle reset
-      if (!RST_N) begin
-          ptr           <= 0;
-          DATA_OUT      <= 0;
-          FULL          <= 0;
-          EMPTY         <= 1;
+    
+    // Handle reset
+    if (!RST_N) begin
+      ptr           <= 0;
+      DATA_OUT      <= 0;
+      FULL          <= 0;
+      EMPTY         <= 1;
 
-      // Else push or pop from the stack
-      end else begin
+    // Else push or pop from the stack
+    end else begin
 
-          // Push takes precedence over pop
-          if (PUSH & !FULL) begin
-              // Update stack when new data is pushed and there's room
-              stack[ptr] <= DATA_IN;
-              ptr       <= ptr + 1;
-              DATA_OUT  <= DATA_IN;
-              FULL      <= (ptr == DEPTH - 1);
-              EMPTY     <= 0;
-          end
-          
-          // Pop only updates ptr, no need to waste power clearing regs
-          else if (POP & !EMPTY) begin
-              ptr       <= ptr - 1;
-              DATA_OUT  <= stack[ptr];
-              FULL      <= 0;
-              EMPTY     <= (ptr == 0);
-          end
+      // Push takes precedence over pop
+      if (PUSH & !FULL) begin
+        // Update stack when new data is pushed and there's room
+        stack[ptr] <= DATA_IN;
+        ptr       <= ptr + 1;
+        DATA_OUT  <= DATA_IN;
+        FULL      <= (ptr == DEPTH - 1);
+        EMPTY     <= 0;
       end
+      
+      // Pop only updates ptr, no need to waste power clearing regs
+      else if (POP & !EMPTY) begin
+        ptr       <= ptr - 1;
+        DATA_OUT  <= stack[ptr];
+        FULL      <= 0;
+        EMPTY     <= (ptr == 0);
+      end
+    end
   end
 
 
