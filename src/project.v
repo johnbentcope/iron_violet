@@ -6,11 +6,13 @@
 
 `define default_netname none
 
-module tt_um_iron_violet_simon #(
+module tt_um_iron_violet_simon
+// #(
   // parameter CLK_FREQ    = 50_000_000_000, // 50 billion mHz aka 50 MHz
-  parameter DATA_WIDTH  = 2,
-  parameter DEPTH       = 16
-)(
+  // parameter NUM_BUTTONS = 4,
+  // parameter DEPTH       = 16
+// )
+(
   input  wire [7:0] ui_in,    // Dedicated inputs
   output wire [7:0] uo_out,   // Dedicated outputs
   input  wire [7:0] uio_in,   // IOs: Input path

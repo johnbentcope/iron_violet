@@ -34,7 +34,7 @@ reg [15: 0] oscillator_counter;
 
 reg [1:0] current_note;
 
-reg [13:0] counter_compares [1:0]; // this seems expensive... optimize?
+reg [13:0] counter_compares [3:0]; // this seems expensive... optimize?
 
 initial begin
   counter_compares[0] = 13_514;
