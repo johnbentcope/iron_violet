@@ -8,7 +8,7 @@
 //============================================================================//
 // Gate Level 2DFF (12 Gates!)
 //============================================================================//
-module 2dff_gates (
+module 2dff (
     // inputs
     input  wire clk,     // clock
     input  wire rst_n,   // active-low reset
@@ -20,7 +20,7 @@ module 2dff_gates (
     reg d_int;
 
     // dffs
-    dff_gates dff_gates_u0 (
+    dff dff_u0 (
         .clk   (clk),
         .rst_n (rst_n),
         .d     (async_in),
@@ -28,7 +28,7 @@ module 2dff_gates (
         .q_bar (/*open*/)
     ); 
     
-    dff_gates dff_gates_u1 (
+    dff dff_u1 (
         .clk   (clk),
         .rst_n (rst_n),
         .d     (d_int),

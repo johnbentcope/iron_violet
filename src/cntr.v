@@ -6,20 +6,21 @@
 `define default_netname none
 
 //============================================================================//
-// Counter
+// Gate Level Counter
 //============================================================================//
 module cntr #(parameter COUNT_WIDTH = 4)(
     // inputs
-    input  wire                  clk,     // clock
-    input  wire                  rst_n,   // active-low reset
-    input  wire                  en,      // enable
+    input  wire                  clk,   // clock
+    input  wire                  rst_n, // active-low reset
+    input  wire                  en,    // enable
     // outputs
-    output reg [COUNT_WIDTH-1:0] count    // sync data out
+    output reg [COUNT_WIDTH-1:0] count  // counter value
 );
-    // counting ff
-    always @(posedge clk or negedge rst_n) begin
-      if  (!rst_n) count <= 0;
-      else if (en) count <= count + 1;
-    end
-  
-endmodule
+    // cascading jkff
+    generate 
+        for (genvar i = 0; i < COUNT_WIDTH; i = i + 1) begin
+            jkff jkff_u (.clk (clk), .rst_n (rst_n), .j (en), .k (en), .q (count[i]));  
+        end
+    endgenerate
+
+endmodule : cntr
