@@ -56,7 +56,7 @@ module stack #(
 
         // I/O operations
         DATA_OUT   <= DATA_IN;
-        FULL       <= (ptr == DEPTH - 1);
+        FULL       <= (ptr == (DEPTH - 1));
         EMPTY      <= 0;
       end
       
