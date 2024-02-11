@@ -14,17 +14,17 @@
 `include "clog2_function.vh"
 
 module stack #(
-      parameter DATA_WIDTH = 2,
-      parameter DEPTH = 16
+    parameter DATA_WIDTH = 2,
+    parameter DEPTH = 16
   ) (
-      input                       CLK,
-      input                       RST_N,
-      input                       PUSH,
-      input                       POP,
-      input      [DATA_WIDTH-1:0] DATA_IN,
-      output reg [DATA_WIDTH-1:0] DATA_OUT,
-      output reg                  FULL,
-      output reg                  EMPTY
+    input                       CLK,
+    input                       RST_N,
+    input                       PUSH,
+    input                       POP,
+    input      [DATA_WIDTH-1:0] DATA_IN,
+    output reg [DATA_WIDTH-1:0] DATA_OUT,
+    output reg                  FULL,
+    output reg                  EMPTY
   );
 
   // Verilog doesn't have clog2(), so don't try to use it.
@@ -48,25 +48,29 @@ module stack #(
     // Else push or pop from the stack
     end else begin
 
-      // Push takes precedence over pop
+      // Push operation if not full
       if (PUSH & !FULL) begin
-        // Update stack when new data is pushed and there's room
+        // Pushes update stack and ptr
         stack[ptr] <= DATA_IN;
-        ptr       <= ptr + 1;
-        DATA_OUT  <= DATA_IN;
-        FULL      <= (ptr == DEPTH - 1);
-        EMPTY     <= 0;
+        ptr        <= ptr + 1;
+
+        // I/O operations
+        DATA_OUT   <= DATA_IN;
+        FULL       <= (ptr == DEPTH - 1);
+        EMPTY      <= 0;
       end
       
-      // Pop only updates ptr, no need to waste power clearing regs
+      // Pop operation if not empty
       else if (POP & !EMPTY) begin
-        ptr       <= ptr - 1;
-        DATA_OUT  <= stack[ptr];
-        FULL      <= 0;
-        EMPTY     <= (ptr == 0);
+        // Pops only update ptr
+        ptr        <= ptr - 1;
+
+        // I/O operations
+        DATA_OUT   <= stack[ptr];
+        FULL       <= 0;
+        EMPTY      <= (ptr == 0);
       end
     end
   end
-
 
 endmodule : stack
