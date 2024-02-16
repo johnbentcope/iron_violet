@@ -32,8 +32,8 @@ VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
 endif
 
 # Include the testbench sources:
-VERILOG_SOURCES += $(PWD)/tb.v 
-TOPLEVEL = tb
+VERILOG_SOURCES += $(PWD)/stack_tb.v 
+TOPLEVEL = stack_tb
 
 # MODULE is the basename of the Python test file
 MODULE = test

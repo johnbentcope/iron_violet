@@ -37,7 +37,7 @@ module stack #(
   // If not in reset, check for a push.
   // If there's no push, check for a pop.
   always @(posedge CLK) begin
-    
+
     // Handle reset
     if (!RST_N) begin
       ptr           <= 0;
@@ -52,18 +52,22 @@ module stack #(
       if (PUSH & !FULL) begin
         // Pushes update stack and ptr
         stack[ptr] <= DATA_IN;
-        ptr        <= ptr + 1;
+        if (ptr != '1) begin
+          ptr        <= ptr + 1;
+        end
 
         // I/O operations
         DATA_OUT   <= DATA_IN;
-        FULL       <= (ptr == 4'hF); // TODO un-hardcode this
+        FULL       <= (ptr == '1); // TODO un-hardcode this
         EMPTY      <= 0;
       end
-      
+
       // Pop operation if not empty
       else if (POP & !EMPTY) begin
         // Pops only update ptr
-        ptr        <= ptr - 1;
+        if (ptr != '0) begin
+          ptr        <= ptr +-1;
+        end
 
         // I/O operations
         DATA_OUT   <= stack[ptr];
