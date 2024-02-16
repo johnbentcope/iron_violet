@@ -6,7 +6,7 @@
 module stack_tb ();
   // Dump the signals to a VCD file. You can view it with gtkwave.
   initial begin
-    $dumpfile("stack_tb.vcd");
+    $dumpfile("tb.vcd");
     $dumpvars(0, stack_tb);
     #1;
   end
