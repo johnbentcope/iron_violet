@@ -1,10 +1,10 @@
 module mux (
   // inputs
-  input  wire [3:0] a, // input a
-  input  wire [3:0] b, // input b
-  input  wire       s, // select
+  input  wire a, // input a
+  input  wire b, // input b
+  input  wire s, // select
   // outputs
-  output reg  [3:0] y
+  output reg  y
 );
   // wires
   wire s_bar;

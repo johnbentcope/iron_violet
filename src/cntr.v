@@ -16,10 +16,13 @@ module cntr #(parameter COUNT_WIDTH = 4)(
     // outputs
     output reg [COUNT_WIDTH-1:0] count  // counter value
 );
-    // cascading jkff
+    // wires
+    wire [COUNT_WIDTH-1:0] q_bar_return;
+    
+    // cascading dff
     generate 
         for (genvar i = 0; i < COUNT_WIDTH; i = i + 1) begin
-            jkff jkff_u (.clk (clk), .rst_n (rst_n), .j (en), .k (en), .q (count[i]));  
+            dff dff_u (.clk (clk), .rst_n (rst_n), .d (q_bar_return[i]), .q (count[i]), .q_bar (q_bar_return[i]));  
         end
     endgenerate
 
