@@ -25,7 +25,7 @@ reg [5:0] cnt;
 reg [5:0] high_score;
 
 
-reg [31:0] [1:0] stack;
+reg [31:0] stack [0:1];
 
 always @(posedge CLK or negedge RST_N) begin
     if(!RST_N) begin
@@ -36,7 +36,6 @@ always @(posedge CLK or negedge RST_N) begin
         WIN        <= 0;
         LOSE       <= 0;
         HS         <= 0;
-        stack      <= 0;
     end
     else begin
         //pulse defaults
