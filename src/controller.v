@@ -20,8 +20,8 @@ output reg HS
 localparam [5:0] MAX = 32;
 
 reg [2:0] state;
-reg [5:0] i;
-reg [5:0] cnt;
+reg [4:0] i;
+reg [4:0] cnt;
 reg [5:0] high_score;
 
 

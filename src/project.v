@@ -42,6 +42,7 @@ module tt_um_iron_violet_simon #(
 
   rng rng_u1(
     .clk(clk),
+    .rst_n(rst_n),
     .out(rand_num)
   );
 
