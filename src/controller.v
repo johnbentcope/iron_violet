@@ -25,7 +25,7 @@ reg [5:0] cnt;
 reg [5:0] high_score;
 
 
-reg [31:0] stack [0:1];
+reg [1:0] stack [0:31];
 
 always @(posedge CLK or negedge RST_N) begin
     if(!RST_N) begin
