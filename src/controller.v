@@ -3,34 +3,29 @@ input CLK,
 input RST_N,
 
 input wire [1:0] IN,
-input wire     IN_VALID,
+input wire       IN_VALID,
 output reg [1:0] OUT,
 
 input wire [1:0] RAND,
-input wire     TIMER_PULSE,
+input wire       TIMER_PULSE,
 
 input  wire START,
 output reg WIN,
 output reg LOSE,
 output reg HS
 );
-`include "header.vh"
+`include "constants.vh"
 
 
-localparam [5:0] MAX = 64;
+localparam [5:0] MAX = 32;
 
 reg [2:0] state;
 reg [5:0] i;
 reg [5:0] cnt;
 reg [5:0] high_score;
 
-reg push;
-reg pop;
-wire full;
-wire empty;
 
-reg [1:0] d_in;
-wire [1:0] d_out;
+reg [MAX-1:0] [1:0] stack;
 
 always @(posedge CLK or negedge RST_N) begin
     if(!RST_N) begin
@@ -41,13 +36,10 @@ always @(posedge CLK or negedge RST_N) begin
         WIN        <= 0;
         LOSE       <= 0;
         HS         <= 0;
-        push       <= 0;
-        pop        <= 0;
+        stack      <= 0;
     end
     else begin
         //pulse defaults
-        push <= 0;
-        pop  <= 0;
         HS   <= 0;
 
         case(state)
@@ -61,14 +53,13 @@ always @(posedge CLK or negedge RST_N) begin
         end
 
         ADD_COLOR_S : begin
-            if(full) begin
+            if(cnt == MAX-1) begin
                 //game over out of memory
                 //NOISE happy sound
                 //maybe special thing if gates
                 state <= WIN_S;
             end else begin
-                d_in <= RAND;
-                push <= 1;
+                stack[cnt] <= RAND;
                 cnt        <= cnt + 1;
                 state      <= DISPLAY_S;
                 HS <= 1;
@@ -78,12 +69,12 @@ always @(posedge CLK or negedge RST_N) begin
         DISPLAY_S : begin
             // break into 2 substates
             // one to set values, one to implement a delay
-            pop   <= 1;
+
             state <= DISPLAY2_S;
         end
 
         DISPLAY2_S :begin
-            OUT   <= d_out;
+            OUT   <= stack[i];
             if(TIMER_PULSE) begin
                 i <= i + 1;
                 state <= DISPLAY_S;
@@ -94,7 +85,7 @@ always @(posedge CLK or negedge RST_N) begin
         INPUT_S : begin
             //assume inputs have been sampled, synced and encoded externally
             if(IN_VALID) begin
-                if(IN == d_out) begin
+                if(IN == stack[i]) begin
                     i <= i + 1;
                     if (i == cnt-1) begin
                         state <= ADD_COLOR_S; //NOISE(win happy sound)
@@ -122,18 +113,6 @@ always @(posedge CLK or negedge RST_N) begin
         endcase
     end
 end
-
-
-stack user_stack (
-    .CLK      (CLK),
-    .RST_N    (RST_N),
-    .PUSH     (push),
-    .POP      (pop),
-    .DATA_IN  (d_in),
-    .DATA_OUT (d_out),
-    .FULL     (full),
-    .EMPTY    (empty)
-  );
 
 //TODO secretly insert code to mine bitcoin
 
