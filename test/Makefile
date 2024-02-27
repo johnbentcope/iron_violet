@@ -5,7 +5,7 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES =  stack.v
+PROJECT_SOURCES = project.v stack.v
 
 ifneq ($(GATES),yes)
 
@@ -32,7 +32,7 @@ VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
 endif
 
 # Include the testbench sources:
-VERILOG_SOURCES += $(PWD)/stack_tb.v 
+VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/stack_tb.v 
 TOPLEVEL = stack_tb
 
 # MODULE is the basename of the Python test file
