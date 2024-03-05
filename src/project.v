@@ -2,7 +2,6 @@
  * Copyright (c) 2023 Your Name
  * SPDX-License-Identifier: Apache-2.0
  */
-`include "clog2_function.vh"
 
 `define default_netname none
 
@@ -31,7 +30,19 @@ module tt_um_iron_violet_simon
   wire [1:0] in_sync;
   wire       in_valid;
 
+  wire [1:0] butt_out;
+  wire       butt_ena;
+
   wire [1:0] rand_num;
+
+
+  assign uo_out[3:0] =  {
+     butt_out[1] &  butt_out[0],
+     butt_out[1] & ^butt_out[0],
+    ^butt_out[1] &  butt_out[0],
+    ^butt_out[1] & ^butt_out[0]
+  }& {4{butt_ena}}
+  ;
 
   //add IO debbounce/ sync/encode
   io_sync io_sync_u1(
@@ -53,12 +64,13 @@ module tt_um_iron_violet_simon
     .RST_N       (rst_n),
     .IN          (in_sync  ),
     .IN_VALID    (in_valid ),
-    .OUT         (uo_out[1:0]),
+    .OUT         (butt_out),
+    .OUT_ENA     (butt_ena),
     .RAND        ( rand_num ),
     .TIMER_PULSE ( ui_in[4] ), //TODO add timer
     .START       ( ui_in[5] ), //TODO add sync
-    .WIN         ( uo_out[2] ),
-    .LOSE        ( uo_out[3] ),
+    .WIN         ( uo_out[5] ),
+    .LOSE        ( uo_out[6] ),
     .HS          ( uo_out[4] )
   );
 

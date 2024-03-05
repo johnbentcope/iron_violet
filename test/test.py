@@ -7,7 +7,7 @@ from cocotb.triggers import ClockCycles
 from cocotb.triggers import FallingEdge, RisingEdge
 
 @cocotb.test()
-async def test_adder(dut):
+async def test_simon(dut):
   dut._log.info("Start")
   
   # Our example module doesn't use clock and reset, but we show how to use them here anyway.

@@ -5,6 +5,7 @@ input RST_N,
 input wire [1:0] IN,
 input wire       IN_VALID,
 output reg [1:0] OUT,
+output reg       OUT_ENA,
 
 input wire [1:0] RAND,
 input wire       TIMER_PULSE,
@@ -36,6 +37,8 @@ always @(posedge CLK or negedge RST_N) begin
         WIN        <= 0;
         LOSE       <= 0;
         HS         <= 0;
+        OUT        <= 3;
+        OUT_ENA    <= 0;
     end
     else begin
         //pulse defaults
@@ -73,7 +76,8 @@ always @(posedge CLK or negedge RST_N) begin
         end
 
         DISPLAY2_S :begin
-            OUT   <= stack[i];
+            OUT_ENA   <= 1;
+            OUT       <= stack[i];
             if(TIMER_PULSE) begin
                 i <= i + 1;
                 state <= DISPLAY_S;
