@@ -4,7 +4,8 @@ input RST_N,
 input START
 );
 
-reg [1:0] current_state;
+reg [1:0]  current_state;
+reg [20:0] counter;
 
 always @(posedge CLK) begin
 
@@ -13,7 +14,13 @@ always @(posedge CLK) begin
     current_state <= 0;
   end
   else begin
-    if (current_state == 0 && )
+    case(current_state)
+      TIMR_IDLE_S: begin
+        if (START) begin
+          current_state <= TIMR_COUNT_S;
+        end
+      end
+    endcase
   end
 
 end

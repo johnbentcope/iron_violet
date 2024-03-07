@@ -46,68 +46,68 @@ always @(posedge CLK or negedge RST_N) begin
 
         case(state)
 
-        IDLE_S : begin
+        CTRL_IDLE_S : begin
             i   <= 0;
             cnt <= 0;
             if(START) begin
-                state <= ADD_COLOR_S; //NOISE (start sound)
+                state <= CTRL_ADD_COLOR_S; //NOISE (start sound)
             end
         end
 
-        ADD_COLOR_S : begin
+        CTRL_ADD_COLOR_S : begin
             if(cnt == MAX-1) begin
                 //game over out of memory
                 //NOISE happy sound
                 //maybe special thing if gates
-                state <= WIN_S;
+                state <= CTRL_WIN_S;
             end else begin
                 stack[cnt] <= RAND;
                 cnt        <= cnt + 1;
-                state      <= DISPLAY_S;
+                state      <= CTRL_DISPLAY_S;
                 HS <= 1;
             end
         end
 
-        DISPLAY_S : begin
+        CTRL_DISPLAY_S : begin
             // break into 2 substates
             // one to set values, one to implement a delay
 
-            state <= DISPLAY2_S;
+            state <= CTRL_DISPLAY2_S;
         end
 
-        DISPLAY2_S :begin
+        CTRL_DISPLAY2_S :begin
             OUT_ENA   <= 1;
             OUT       <= stack[i];
             if(TIMER_PULSE) begin
                 i <= i + 1;
-                state <= DISPLAY_S;
+                state <= CTRL_DISPLAY_S;
             end
         end
 
         //TODO make sure i is reset to 0 before entering this state
-        INPUT_S : begin
+        CTRL_INPUT_S : begin
             //assume inputs have been sampled, synced and encoded externally
             if(IN_VALID) begin
                 if(IN == stack[i]) begin
                     i <= i + 1;
                     if (i == cnt-1) begin
-                        state <= ADD_COLOR_S; //NOISE(win happy sound)
+                        state <= CTRL_ADD_COLOR_S; //NOISE(win happy sound)
                     end
                 end else begin
-                    state <= LOSE_S;
+                    state <= CTRL_LOSE_S;
                 end
             end
         end
 
         //should we just have 'win' for the round and lose for the whole game (maybe change name to end)
         //should win/lose be one state? check score agains highscore
-        WIN_S : begin
+        CTRL_WIN_S : begin
 
-            state <= LOSE_S;
+            state <= CTRL_LOSE_S;
         end
 
-        LOSE_S : begin
-            state <= IDLE_S;
+        CTRL_LOSE_S : begin
+            state <= CTRL_IDLE_S;
             HS    <= 1;
         end
 
