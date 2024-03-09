@@ -11,7 +11,6 @@
 //
 //-------------------------------------------------------------------
 
-`include "clog2_function.vh"
 
 module stack #(
     parameter DATA_WIDTH = 2,
@@ -27,17 +26,14 @@ module stack #(
     output reg                  EMPTY
   );
 
-  // Verilog doesn't have clog2(), so don't try to use it.
-  // Update the ptr width to be clog2(DEPTH) if DEPTH changes.
-  // Or someone write a lil macro here to calculate it
-  reg [clog2(DEPTH)-1:0] ptr;
-  reg [  DATA_WIDTH-1:0] stack [DEPTH-1:0];
+  reg [$clog2(DEPTH)-1:0] ptr;
+  reg [   DATA_WIDTH-1:0] stack [DEPTH-1:0];
 
   // Synchnous stack management state machine with async reset
   // If not in reset, check for a push.
   // If there's no push, check for a pop.
   always @(posedge CLK) begin
-    
+
     // Handle reset
     if (!RST_N) begin
       ptr           <= 0;
@@ -52,18 +48,22 @@ module stack #(
       if (PUSH & !FULL) begin
         // Pushes update stack and ptr
         stack[ptr] <= DATA_IN;
-        ptr        <= ptr + 1;
+        if (ptr != '1) begin
+          ptr        <= ptr + 1;
+        end
 
         // I/O operations
         DATA_OUT   <= DATA_IN;
-        FULL       <= (ptr == DEPTH - 1);
+        FULL       <= (ptr == '1); // TODO un-hardcode this
         EMPTY      <= 0;
       end
-      
+
       // Pop operation if not empty
       else if (POP & !EMPTY) begin
         // Pops only update ptr
-        ptr        <= ptr - 1;
+        if (ptr != '0) begin
+          ptr        <= ptr +-1;
+        end
 
         // I/O operations
         DATA_OUT   <= stack[ptr];

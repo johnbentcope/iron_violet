@@ -1,0 +1,39 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Feb 16 02:45:45 2024
+[*]
+[dumpfile] "/home/yoda/repos/iron_violet/test/stack_tb.vcd"
+[dumpfile_mtime] "Fri Feb 16 02:45:21 2024"
+[dumpfile_size] 5994
+[savefile] "/home/yoda/repos/iron_violet/test/stack_tb.gtkw"
+[timestart] 0
+[size] 1920 1145
+[pos] -1 -1
+*-27.514118 39600000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] stack_tb.
+[sst_width] 297
+[signals_width] 230
+[sst_expanded] 1
+[sst_vpaned_height] 352
+@200
+-Inputs
+@28
+stack_tb.user_project.CLK
+stack_tb.user_project.RST_N
+@29
+stack_tb.user_project.PUSH
+@28
+stack_tb.user_project.POP
+stack_tb.user_project.DATA_IN[1:0]
+@200
+-Output Pins
+@28
+stack_tb.user_project.DATA_OUT[1:0]
+stack_tb.user_project.EMPTY
+stack_tb.user_project.FULL
+@200
+-Internal
+@22
+stack_tb.user_project.ptr[3:0]
+[pattern_trace] 1
+[pattern_trace] 0

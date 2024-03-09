@@ -15,9 +15,27 @@ module tb ();
   reg  clk;
   reg  rst_n;
   reg  ena;
-  reg  [7:0] ui_in;
+  wire  [7:0] ui_in;
   reg  [7:0] uio_in;
+
+  reg  butt_red;
+  reg  butt_yel;
+  reg  butt_grn;
+  reg  butt_blu;
+  reg  butt_start;
+
+  assign ui_in = {2'b0, butt_start, 1'b0, butt_blu, butt_grn, butt_yel, butt_red};
+
+  wire lamp_red;
+  wire lamp_yel;
+  wire lamp_grn;
+  wire lamp_blu;
+
   wire [7:0] uo_out;
+  assign lamp_red = uo_out[0];
+  assign lamp_yel = uo_out[1];
+  assign lamp_grn = uo_out[2];
+  assign lamp_blu = uo_out[3];
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
 
