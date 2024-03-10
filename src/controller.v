@@ -11,7 +11,7 @@ input wire [1:0] RAND,
 input wire       TIMER_GO,
 input wire       TIMER_PULSE,
 
-input  wire START,
+input  wire START_GAME,
 output reg WIN,
 output reg LOSE,
 output reg HS
@@ -22,8 +22,8 @@ output reg HS
 localparam [5:0] MAX = 32;
 
 reg [2:0] state;
-reg [4:0] i;
-reg [4:0] cnt;
+reg [4:0] i;          // Current historic turn to display
+reg [4:0] cnt;        // Current turn count
 reg [5:0] high_score;
 
 reg timer_go_i;
@@ -34,28 +34,28 @@ assign TIMER_GO = timer_go_i;
 
 always @(posedge CLK or negedge RST_N) begin
     if(!RST_N) begin
-        state      <= 0;
-        i          <= 0;
-        timer_go_i <= 0;
-        cnt        <= 0;
-        high_score <= 0;
-        WIN        <= 0;
-        LOSE       <= 0;
-        HS         <= 0;
-        OUT        <= 3;
-        OUT_ENA    <= 0;
+        state       <= 0;
+        i           <= 0;
+        timer_go_i  <= 0;
+        cnt         <= 0;
+        high_score  <= 0;
+        WIN         <= 0;
+        LOSE        <= 0;
+        HS          <= 0;
+        OUT         <= 3;
+        OUT_ENA     <= 0;
     end
     else begin
         //pulse defaults
-        HS         <= 0;
-        timer_go_i <= 0;
+        HS          <= 0;
+        timer_go_i  <= 0;
 
         case(state)
 
         CTRL_IDLE_S : begin
             i   <= 0;
             cnt <= 0;
-            if(START) begin
+            if(START_GAME) begin
                 state <= CTRL_ADD_COLOR_S; //NOISE (start sound)
             end
         end
@@ -78,15 +78,19 @@ always @(posedge CLK or negedge RST_N) begin
             // break into 2 substates
             // one to set values, one to implement a delay
             timer_go_i <= 1;
+            OUT_ENA   <= 1;
+            OUT       <= stack[i];
             state <= CTRL_DISPLAY2_S;
         end
 
         CTRL_DISPLAY2_S :begin
-            OUT_ENA   <= 1;
-            OUT       <= stack[i];
             if(TIMER_PULSE) begin
-                i <= i + 1;
-                state <= CTRL_DISPLAY_S;
+                if(i != cnt) begin
+                  i <= i + 1;
+                  state <= CTRL_DISPLAY_S;
+                end else begin
+                  state <= CTRL_INPUT_S;
+                end
             end
         end
 
@@ -116,8 +120,6 @@ always @(posedge CLK or negedge RST_N) begin
             state <= CTRL_IDLE_S;
             HS    <= 1;
         end
-
-
 
         endcase
     end

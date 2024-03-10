@@ -30,19 +30,20 @@ module tt_um_iron_violet_simon
   wire [1:0] in_sync;
   wire       in_valid;
 
-  wire [1:0] butt_out;
-  wire       butt_ena;
+  wire [1:0] lamp_out;
+  wire       lamp_ena;
 
   wire [1:0] rand_num;
 
   wire timer_pulse;
+  wire timer_go;
 
   assign uo_out[3:0] =  {
-     butt_out[1] &  butt_out[0],
-     butt_out[1] & ^butt_out[0],
-    ^butt_out[1] &  butt_out[0],
-    ^butt_out[1] & ^butt_out[0]
-  }& {4{butt_ena}}
+     lamp_out[1] &  lamp_out[0],
+     lamp_out[1] & ^lamp_out[0],
+    ^lamp_out[1] &  lamp_out[0],
+    ^lamp_out[1] & ^lamp_out[0]
+  } & {4{lamp_ena}}
   ;
 
   //add IO debbounce/ sync/encode
@@ -65,12 +66,12 @@ module tt_um_iron_violet_simon
     .RST_N        ( rst_n       ),
     .IN           ( in_sync     ),
     .IN_VALID     ( in_valid    ),
-    .OUT          ( butt_out    ),
-    .OUT_ENA      ( butt_ena    ),
+    .OUT          ( lamp_out    ),
+    .OUT_ENA      ( lamp_ena    ),
     .RAND         ( rand_num    ),
     .TIMER_GO     ( timer_go    ),
     .TIMER_PULSE  ( timer_pulse ), //TODO add timer
-    .START        ( ui_in[5]    ), //TODO add sync
+    .START_GAME   ( ui_in[5]    ), //TODO add sync
     .WIN          ( uo_out[5]   ),
     .LOSE         ( uo_out[6]   ),
     .HS           ( uo_out[4]   )
@@ -79,7 +80,7 @@ module tt_um_iron_violet_simon
   timer timer_u1(
     .CLK        ( clk         ),
     .RST_N      ( rst_n       ),
-    .START      ( timer_go    ),
+    .START_TMR  ( timer_go    ),
     .PULSE      ( timer_pulse )
   );
   //TODO ad sound nmodule, will get copy of output, hs, win, lose

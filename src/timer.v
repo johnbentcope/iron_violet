@@ -3,7 +3,7 @@
 module timer(
 input  CLK,
 input  RST_N,
-input  START,
+input  START_TMR,
 output PULSE
 );
 `include "constants.vh"
@@ -26,7 +26,7 @@ always @(posedge CLK) begin
     case(current_state)
       TIMR_IDLE_S: begin
         pulse_i   <= 0;
-        if (START) begin
+        if (START_TMR) begin
           current_state <= TIMR_COUNT_S;
           counter   <= counter + 1;
         end
@@ -45,4 +45,4 @@ always @(posedge CLK) begin
 end
 
 
-endmodule
+endmodule : timer
