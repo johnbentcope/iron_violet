@@ -26,17 +26,13 @@ reg [4:0] i;          // Current historic turn to display
 reg [4:0] cnt;        // Current turn count
 reg [5:0] high_score;
 
-reg timer_go_i;
-
 reg [1:0] stack [0:31];
-
-assign TIMER_GO = timer_go_i;
 
 always @(posedge CLK or negedge RST_N) begin
     if(!RST_N) begin
         state       <= 0;
         i           <= 0;
-        timer_go_i  <= 0;
+        TIMER_GO    <= 0;
         cnt         <= 0;
         high_score  <= 0;
         WIN         <= 0;
@@ -48,7 +44,7 @@ always @(posedge CLK or negedge RST_N) begin
     else begin
         //pulse defaults
         HS          <= 0;
-        timer_go_i  <= 0;
+        TIMER_GO    <= 0;
 
         case(state)
 
@@ -77,7 +73,7 @@ always @(posedge CLK or negedge RST_N) begin
         CTRL_DISPLAY_S : begin
             // break into 2 substates
             // one to set values, one to implement a delay
-            timer_go_i <= 1;
+            TIMER_GO  <= 1;
             OUT_ENA   <= 1;
             OUT       <= stack[i];
             state <= CTRL_DISPLAY2_S;
@@ -127,4 +123,4 @@ end
 
 //TODO secretly insert code to mine bitcoin
 
-endmodule
+endmodule : controller
