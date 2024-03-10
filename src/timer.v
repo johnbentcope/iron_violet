@@ -8,7 +8,7 @@ output PULSE
 );
 `include "constants.vh"
 
-reg [1:0]  current_state;
+reg [1:0]  state;
 reg pulse_i;
 reg [20:0] counter;
 
@@ -18,7 +18,7 @@ always @(posedge CLK) begin
 
   // Handle reset.
   if(!RST_N) begin
-    current_state <= 0;
+    state <= 0;
     pulse_i       <= 0;
     counter       <= 0;
   end
@@ -26,10 +26,10 @@ always @(posedge CLK) begin
     // Pulsed signal default values
     pulse_i   <= 0;
     
-    case(current_state)
+    case(state)
       TIMR_IDLE_S: begin
         if (START_TMR) begin
-          current_state <= TIMR_COUNT_S;
+          state <= TIMR_COUNT_S;
           counter       <= counter + 1;
         end
       end
@@ -38,7 +38,7 @@ always @(posedge CLK) begin
         if (counter == TIMR_MAX_C) begin
           counter       <= '0;
           pulse_i       <=  1;
-          current_state <= TIMR_IDLE_S;
+          state <= TIMR_IDLE_S;
         end
       end
       default : begin
