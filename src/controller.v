@@ -1,20 +1,20 @@
 module controller(
-input CLK,
-input RST_N,
+input             CLK,
+input             RST_N,
 
-input wire [1:0] IN,
-input wire       IN_VALID,
-output reg [1:0] OUT,
-output reg       OUT_ENA,
+input  wire [1:0] IN,
+input  wire       IN_VALID,
+output reg  [1:0] OUT,
+output reg        OUT_ENA,
 
-input wire [1:0] RAND,
-input wire       TIMER_GO,
-input wire       TIMER_PULSE,
+input  wire [1:0] RAND,
+output wire       TIMER_GO,
+input  wire       TIMER_PULSE,
 
-input  wire START_GAME,
-output reg WIN,
-output reg LOSE,
-output reg HS
+input  wire       START_GAME,
+output reg        WIN,
+output reg        LOSE,
+output reg        HS
 );
 `include "constants.vh"
 
