@@ -65,7 +65,6 @@ tb.user_project.controller_u1.LOSE
 tb.user_project.controller_u1.OUT[1:0]
 tb.user_project.controller_u1.OUT_ENA
 tb.user_project.controller_u1.RAND[1:0]
-tb.user_project.controller_u1.TIMER_GO
 tb.user_project.controller_u1.TIMER_PULSE
 tb.user_project.controller_u1.WIN
 @22

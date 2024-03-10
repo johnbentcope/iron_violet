@@ -8,7 +8,7 @@ output reg  [1:0] OUT,
 output reg        OUT_ENA,
 
 input  wire [1:0] RAND,
-output wire       TIMER_GO,
+output reg        TIMER_GO,
 input  wire       TIMER_PULSE,
 
 input  wire       START_GAME,
