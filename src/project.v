@@ -35,6 +35,7 @@ module tt_um_iron_violet_simon
 
   wire [1:0] rand_num;
 
+  wire timer_pulse;
 
   assign uo_out[3:0] =  {
      butt_out[1] &  butt_out[0],
@@ -60,20 +61,27 @@ module tt_um_iron_violet_simon
   );
 
   controller controller_u1(
-    .CLK         (clk),
-    .RST_N       (rst_n),
-    .IN          (in_sync  ),
-    .IN_VALID    (in_valid ),
-    .OUT         (butt_out),
-    .OUT_ENA     (butt_ena),
-    .RAND        ( rand_num ),
-    .TIMER_PULSE ( ui_in[4] ), //TODO add timer
-    .START       ( ui_in[5] ), //TODO add sync
-    .WIN         ( uo_out[5] ),
-    .LOSE        ( uo_out[6] ),
-    .HS          ( uo_out[4] )
+    .CLK          ( clk         ),
+    .RST_N        ( rst_n       ),
+    .IN           ( in_sync     ),
+    .IN_VALID     ( in_valid    ),
+    .OUT          ( butt_out    ),
+    .OUT_ENA      ( butt_ena    ),
+    .RAND         ( rand_num    ),
+    .TIMER_GO     ( timer_go    ),
+    .TIMER_PULSE  ( timer_pulse ), //TODO add timer
+    .START        ( ui_in[5]    ), //TODO add sync
+    .WIN          ( uo_out[5]   ),
+    .LOSE         ( uo_out[6]   ),
+    .HS           ( uo_out[4]   )
   );
 
+  timer timer_u1(
+    .CLK        ( clk         ),
+    .RST_N      ( rst_n       ),
+    .START      ( timer_go    ),
+    .PULSE      ( timer_pulse )
+  );
   //TODO ad sound nmodule, will get copy of output, hs, win, lose
   // and will drive spreaker output
 

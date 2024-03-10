@@ -65,6 +65,6 @@ async def test_simon(dut):
 
   dut.butt_start.value = 0
 
-  await ClockCycles(dut.clk, 10)
+  await ClockCycles(dut.clk, 20)
 
   assert True
