@@ -19,7 +19,7 @@ output reg        HS
 `include "constants.vh"
 
 
-localparam [4:0] MAX = 32;
+localparam [4:0] MAX = 5'd32;
 
 reg [2:0] state;
 reg [4:0] i;          // Current historic turn to display
@@ -118,6 +118,10 @@ always @(posedge CLK or negedge RST_N) begin
         CTRL_LOSE_S : begin
             state <= CTRL_IDLE_S;
             HS    <= 1;
+        end
+
+        default : begin
+          state <= CTRL_IDLE_S;
         end
 
         endcase

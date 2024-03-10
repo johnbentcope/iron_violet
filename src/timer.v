@@ -41,6 +41,10 @@ always @(posedge CLK) begin
           current_state <= TIMR_IDLE_S;
         end
       end
+      default : begin
+        state <= TIMR_IDLE_S;
+      end
+
     endcase
   end
 
