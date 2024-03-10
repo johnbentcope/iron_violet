@@ -23,16 +23,18 @@ always @(posedge CLK) begin
     counter       <= 0;
   end
   else begin
+    // Pulsed signal default values
+    pulse_i   <= 0;
+    
     case(current_state)
       TIMR_IDLE_S: begin
-        pulse_i   <= 0;
         if (START_TMR) begin
           current_state <= TIMR_COUNT_S;
-          counter   <= counter + 1;
+          counter       <= counter + 1;
         end
       end
       TIMR_COUNT_S: begin
-        counter   <= counter + 1;
+        counter         <= counter + 1;
         if (counter == TIMR_MAX_C) begin
           counter       <= '0;
           pulse_i       <=  1;

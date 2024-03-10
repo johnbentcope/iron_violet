@@ -65,6 +65,54 @@ async def test_simon(dut):
 
   dut.butt_start.value = 0
 
-  await ClockCycles(dut.clk, 20)
+  await ClockCycles(dut.clk, 9)
+
+  dut.butt_blu .value = 1
+
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_blu .value = 0
+
+  await ClockCycles(dut.clk, 15)
+
+  dut.butt_blu .value = 1
+
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_blu .value = 0
+
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_grn .value = 1
+
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_grn .value = 0
+
+  await ClockCycles(dut.clk, 27)
+
+  dut.butt_blu .value = 1
+
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_blu .value = 0
+
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_grn .value = 1
+
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_grn .value = 0
+  
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_red .value = 1
+
+  await ClockCycles(dut.clk, 1)
+
+  dut.butt_red .value = 0
+
+  await ClockCycles(dut.clk, 40)
 
   assert True

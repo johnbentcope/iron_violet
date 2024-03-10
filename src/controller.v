@@ -42,7 +42,7 @@ always @(posedge CLK or negedge RST_N) begin
         OUT_ENA     <= 0;
     end
     else begin
-        //pulse defaults
+        // Pulsed signal default values
         HS          <= 0;
         TIMER_GO    <= 0;
 
@@ -64,7 +64,6 @@ always @(posedge CLK or negedge RST_N) begin
                 state <= CTRL_WIN_S;
             end else begin
                 stack[cnt] <= RAND;
-                cnt        <= cnt + 1;
                 state      <= CTRL_DISPLAY_S;
                 HS <= 1;
             end
@@ -76,16 +75,19 @@ always @(posedge CLK or negedge RST_N) begin
             TIMER_GO  <= 1;
             OUT_ENA   <= 1;
             OUT       <= stack[i];
-            state <= CTRL_DISPLAY2_S;
+            state     <= CTRL_DISPLAY2_S;
         end
 
         CTRL_DISPLAY2_S :begin
             if(TIMER_PULSE) begin
-                if(i != cnt) begin
-                  i <= i + 1;
-                  state <= CTRL_DISPLAY_S;
+                OUT_ENA   <= 0;
+                if(i == cnt) begin
+                  state   <= CTRL_INPUT_S;
+                  i       <= 0;
+                  cnt     <= cnt + 1;
                 end else begin
-                  state <= CTRL_INPUT_S;
+                  i       <= i + 1;
+                  state   <= CTRL_DISPLAY_S;
                 end
             end
         end
@@ -97,6 +99,7 @@ always @(posedge CLK or negedge RST_N) begin
                 if(IN == stack[i]) begin
                     i <= i + 1;
                     if (i == cnt-1) begin
+                        i     <= 0;
                         state <= CTRL_ADD_COLOR_S; //NOISE(win happy sound)
                     end
                 end else begin
