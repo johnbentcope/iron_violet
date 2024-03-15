@@ -22,7 +22,9 @@ module cntr #(parameter COUNT_WIDTH = 4)(
     // cascading dff
     generate 
         for (genvar i = 0; i < COUNT_WIDTH; i = i + 1) begin
-            dff dff_u (.clk (clk), .rst_n (rst_n), .d (q_bar_return[i]), .q (count[i]), .q_bar (q_bar_return[i]));  
+            if (i == 0) dff dff_u (.clk (clk),        .rst_n (rst_n), .d (q_bar_return[i]), .q (count[i]), .q_bar (q_bar_return[i])); 
+            // additional flip flops are clocked based on the previous flip flop's q output
+            else        dff dff_u (.clk (count[i-1]), .rst_n (rst_n), .d (q_bar_return[i]), .q (count[i]), .q_bar (q_bar_return[i]));  
         end
     endgenerate
 
