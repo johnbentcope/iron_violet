@@ -69,7 +69,7 @@ async def reset_dut(dut, cycles=5):
 
   await ClockCycles(dut.clk, 1)
 
-async def start_game(dut, cycles=1):
+async def start_game(dut, cycles=5):
   """
   This coroutine starts the game. That's it.
   """

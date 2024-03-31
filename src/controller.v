@@ -19,7 +19,7 @@ output reg        HS
 `include "constants.vh"
 
 
-localparam [4:0] MAX = '1;
+localparam [4:0] MAX = 5'b1_1111;
 
 reg [3:0] state;
 reg [4:0] i;          // Current historic turn to display
