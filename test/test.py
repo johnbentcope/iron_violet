@@ -24,33 +24,64 @@ async def test_simon(dut):
   dut.uio_in    .value = 0
   dut.ena       .value = 0
   dut.clk       .value = 0
-  dut.rst_n     .value = 0
+  dut.rst_n     .value = 1
   dut.butt_red  .value = 0
   dut.butt_yel  .value = 0
   dut.butt_grn  .value = 0
   dut.butt_blu  .value = 0
   dut.butt_start.value = 0
 
-  await ClockCycles(dut.clk, 5)
-
-  dut.rst_n .value = 1
-
   await ClockCycles(dut.clk, 1)
 
-  dut.butt_start.value = 1
+  await reset_dut(dut)
 
-  await ClockCycles(dut.clk, 1)
+  await start_game(dut)
 
-  dut.butt_start.value = 0
-
-  for i in range(31):
+  for i in range(32):
     await play_back_moves(dut, max_moves=(i+1))
 
+  await ClockCycles(dut.clk, 10)
+
+  await reset_dut(dut)
+
   await ClockCycles(dut.clk, 1)
+
+  await start_game(dut, cycles=10)
+
+  for i in range(12):
+    await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 11))
+
+  await ClockCycles(dut.clk, 10)
   
   assert True
 
-async def play_back_moves(dut, max_moves=10):
+async def reset_dut(dut, cycles=5):
+  """
+  This coroutine resets the dut. That's it.
+  """
+
+  dut.rst_n.value = 0
+
+  await ClockCycles(dut.clk, cycles)
+
+  dut.rst_n.value = 1
+
+  await ClockCycles(dut.clk, 1)
+
+async def start_game(dut, cycles=1):
+  """
+  This coroutine starts the. That's it.
+  """
+
+  dut.butt_start.value = 1
+
+  await ClockCycles(dut.clk, 100)
+
+  dut.butt_start.value = 0
+
+  await ClockCycles(dut.clk, 1)
+
+async def play_back_moves(dut, max_moves=10, fail_last=False):
   """
   This coroutine listens to the lamp signals in parallel, stores the sequence,
   and then replays the sequence using the button signals. It adapts to the sequence
@@ -78,8 +109,7 @@ async def play_back_moves(dut, max_moves=10):
     
     await ClockCycles(dut.clk, 4)  # Wait
 
-
-    # Update move based on the triggered lamp
+    # Update moves based on the triggered lamp
     if dut.lamp_red == 1:
       moves.append(0)
     elif dut.lamp_yel == 1:
@@ -97,9 +127,12 @@ async def play_back_moves(dut, max_moves=10):
 
 
 
-  dut._log.info(moves)
+  # dut._log.info(moves)
   # Replay the moves with a delay between each
-  for move in moves:
+  for i in range(max_moves):
+    move = moves[i]
+    if ((fail_last == True) and (i == max_moves-1)):
+      move = 3-move
     dut.butt_red.value = dut.butt_yel.value = dut.butt_grn.value = dut.butt_blu.value = 0
     if(move == 0):
       dut.butt_red.value = 1  # Set the appropriate button high
