@@ -37,8 +37,8 @@ async def test_simon(dut):
 
   await start_game(dut)
 
-  for i in range(32):
-    await play_back_moves(dut, max_moves=(i+1))
+  for i in range(31):
+    await play_back_moves(dut, max_moves=(i))
 
   await ClockCycles(dut.clk, 10)
 
@@ -75,7 +75,7 @@ async def start_game(dut, cycles=1):
 
   dut.butt_start.value = 1
 
-  await ClockCycles(dut.clk, 100)
+  await ClockCycles(dut.clk, cycles)
 
   dut.butt_start.value = 0
 
@@ -125,12 +125,16 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
       dut._log.info("Lamp didn't fall.")
       break
 
+  # playback_delay = random.randint(3,10);
+  # await ClockCycles(dut.clk, playback_delay)  # Delay before playing game
 
-
-  # dut._log.info(moves)
+  dut._log.info(moves)
   # Replay the moves with a delay between each
   for i in range(max_moves):
     move = moves[i]
+    hold_cycles = random.randint(3,100);
+    release_cycles = random.randint(3,100);
+    await ClockCycles(dut.clk, release_cycles)  # Delay between moves
     if ((fail_last == True) and (i == max_moves-1)):
       move = 3-move
     dut.butt_red.value = dut.butt_yel.value = dut.butt_grn.value = dut.butt_blu.value = 0
@@ -142,7 +146,7 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
       dut.butt_grn.value = 1
     elif (move == 3):
       dut.butt_blu.value = 1
-    await ClockCycles(dut.clk, 1)  # Hold the button for 10 clock cycles
+    await ClockCycles(dut.clk, hold_cycles)  # Hold the button for 10 clock cycles
     if(move == 0):
       dut.butt_red.value = 0  # Set the appropriate button low
     elif (move == 1):
@@ -151,4 +155,3 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
       dut.butt_grn.value = 0
     elif (move == 3):
       dut.butt_blu.value = 0
-    await ClockCycles(dut.clk, 1)  # Delay between moves

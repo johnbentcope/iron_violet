@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sun Mar 31 16:17:28 2024
+[*] Sun Mar 31 16:47:45 2024
 [*]
 [dumpfile] "/home/yoda/repos/iron_violet/test/tb.vcd"
-[dumpfile_mtime] "Sun Mar 31 16:17:14 2024"
-[dumpfile_size] 280294
+[dumpfile_mtime] "Sun Mar 31 16:47:42 2024"
+[dumpfile_size] 3100246
 [savefile] "/home/yoda/repos/iron_violet/test/tb.gtkw"
 [timestart] 0
 [size] 1920 1052
 [pos] -1 -1
-*-27.769384 1301000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-36.362038 393010000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tb.
 [treeopen] tb.user_project.
 [sst_width] 297
@@ -65,8 +65,12 @@ tb.user_project.controller_u1.WIN
 tb.user_project.controller_u1.cnt[4:0]
 tb.user_project.controller_u1.high_score[5:0]
 tb.user_project.controller_u1.i[4:0]
+@100000028
+tb.user_project.controller_u1.state[3:0]
 @28
-tb.user_project.controller_u1.state[2:0]
+tb.user_project.controller_u1.good_hold
+@29
+tb.user_project.controller_u1.last_color
 @200
 -Timer
 @22
