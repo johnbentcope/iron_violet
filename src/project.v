@@ -40,6 +40,7 @@ module tt_um_iron_violet_simon
   assign uo_out[2] = lamp_ena &  lamp_out[1] & !lamp_out[0];
   assign uo_out[3] = lamp_ena &  lamp_out[1] &  lamp_out[0];
 
+  assign ou_out[5] = timer_pulse;
   wire timer_pulse;
   wire timer_go;
 
@@ -69,7 +70,7 @@ module tt_um_iron_violet_simon
     .TIMER_GO     ( timer_go    ),
     .TIMER_PULSE  ( timer_pulse ), //TODO add timer
     .START_GAME   ( ui_in [5]   ), //TODO add sync
-    .WIN          ( uo_out[5]   ),
+    .WIN          (    ),
     .LOSE         ( uo_out[6]   ),
     .HS           ( uo_out[4]   )
   );

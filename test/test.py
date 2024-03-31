@@ -8,7 +8,7 @@ from cocotb.triggers import ClockCycles
 from cocotb.triggers import FallingEdge, RisingEdge
 from cocotb.triggers import Combine, First, with_timeout
 
-random.seed(1711904269)
+random.seed(1711904743)
 fail_move = random.randint(4,31)
 
 @cocotb.test()
@@ -71,7 +71,7 @@ async def reset_dut(dut, cycles=5):
 
 async def start_game(dut, cycles=1):
   """
-  This coroutine starts the. That's it.
+  This coroutine starts the game. That's it.
   """
 
   dut.butt_start.value = 1
