@@ -14,7 +14,7 @@ reg [20:0] counter;
 
 assign PULSE = pulse_i;
 
-always @(posedge CLK) begin
+always @(posedge CLK or negedge RST_N) begin
 
   // Handle reset.
   if(!RST_N) begin
