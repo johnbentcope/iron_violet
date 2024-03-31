@@ -19,12 +19,15 @@ output reg        HS
 `include "constants.vh"
 
 
-localparam [4:0] MAX = 5'd32;
+localparam [4:0] MAX = '1;
 
-reg [2:0] state;
+reg [3:0] state;
 reg [4:0] i;          // Current historic turn to display
 reg [4:0] cnt;        // Current turn count
 reg [5:0] high_score;
+
+reg good_hold;
+reg last_color;
 
 reg [1:0] stack [0:31];
 
@@ -40,6 +43,8 @@ always @(posedge CLK or negedge RST_N) begin
         HS          <= 0;
         OUT         <= 3;
         OUT_ENA     <= 0;
+        good_hold   <= 0;
+        last_color  <= 0;
     end
     else begin
         // Pulsed signal default values
@@ -52,11 +57,18 @@ always @(posedge CLK or negedge RST_N) begin
             i   <= 0;
             cnt <= 0;
             if(START_GAME) begin
-                state <= CTRL_ADD_COLOR_S; //NOISE (start sound)
+                state <= CTRL_START_S; //NOISE (start sound)
+            end
+        end
+
+        CTRL_START_S : begin
+            if(!START_GAME) begin
+                state <= CTRL_ADD_COLOR_S; //End NOISE (start sound)
             end
         end
 
         CTRL_ADD_COLOR_S : begin
+            last_color <= 0;
             if(cnt == MAX-1) begin
                 //game over out of memory
                 //NOISE happy sound
@@ -65,7 +77,6 @@ always @(posedge CLK or negedge RST_N) begin
             end else begin
                 stack[cnt] <= RAND;
                 state      <= CTRL_DISPLAY_S;
-                HS <= 1;
             end
         end
 
@@ -98,14 +109,37 @@ always @(posedge CLK or negedge RST_N) begin
             if(IN_VALID) begin
                 if(IN == stack[i]) begin
                     i <= i + 1;
+                    good_hold <= 1;
                     if (i == cnt-1) begin
-                        i     <= 0;
-                        state <= CTRL_ADD_COLOR_S; //NOISE(win happy sound)
+                        last_color <= 1;
                     end
-                end else begin
-                    state <= CTRL_LOSE_S;
                 end
+                state <= CTRL_INPUT_HOLD_S;
             end
+        end
+
+        CTRL_INPUT_HOLD_S : begin
+          // if(IN == stack[i]) begin
+          //     i <= i + 1;
+          //     good_hold <= 1;
+          //     if (i == cnt-1) begin
+          //         i <= 0;
+          //     end
+          // end
+          if(!IN_VALID) begin // Don't transition until released
+            if(good_hold) begin
+              good_hold <= 0;
+
+              if (last_color) begin
+                i <= 0;
+                state <= CTRL_ADD_COLOR_S; // Releasing correct button
+              end else begin
+                state <= CTRL_INPUT_S;
+              end
+            end else begin
+              state <= CTRL_LOSE_S; // Releasing wrong button
+            end
+          end
         end
 
         //should we just have 'win' for the round and lose for the whole game (maybe change name to end)
