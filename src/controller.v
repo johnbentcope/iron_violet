@@ -119,13 +119,6 @@ always @(posedge CLK or negedge RST_N) begin
         end
 
         CTRL_INPUT_HOLD_S : begin
-          // if(IN == stack[i]) begin
-          //     i <= i + 1;
-          //     good_hold <= 1;
-          //     if (i == cnt-1) begin
-          //         i <= 0;
-          //     end
-          // end
           if(!IN_VALID) begin // Don't transition until released
             if(good_hold) begin
               good_hold <= 0;
@@ -138,6 +131,10 @@ always @(posedge CLK or negedge RST_N) begin
               end
             end else begin
               state <= CTRL_LOSE_S; // Releasing wrong button
+              if(i > high_score) begin
+                high_score <= i;
+                HS    <= 1;
+              end
             end
           end
         end
@@ -145,13 +142,11 @@ always @(posedge CLK or negedge RST_N) begin
         //should we just have 'win' for the round and lose for the whole game (maybe change name to end)
         //should win/lose be one state? check score agains highscore
         CTRL_WIN_S : begin
-
             state <= CTRL_LOSE_S;
         end
 
         CTRL_LOSE_S : begin
             state <= CTRL_IDLE_S;
-            HS    <= 1;
         end
 
         default : begin
