@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sun Mar 10 18:29:54 2024
+[*] Sun Mar 31 01:15:18 2024
 [*]
 [dumpfile] "/home/yoda/repos/iron_violet/test/tb.vcd"
-[dumpfile_mtime] "Sun Mar 10 18:29:50 2024"
-[dumpfile_size] 9157
+[dumpfile_mtime] "Sun Mar 31 01:15:15 2024"
+[dumpfile_size] 311854
 [savefile] "/home/yoda/repos/iron_violet/test/tb.gtkw"
 [timestart] 0
-[size] 1920 1145
+[size] 1920 1052
 [pos] -1 -1
-*-27.257778 158600000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-32.563587 15580000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tb.
 [treeopen] tb.user_project.
 [sst_width] 297
@@ -58,9 +58,7 @@ tb.user_project.controller_u1.IN_VALID
 tb.user_project.controller_u1.LOSE
 tb.user_project.controller_u1.OUT[1:0]
 tb.user_project.controller_u1.OUT_ENA
-@29
 tb.user_project.controller_u1.RAND[1:0]
-@28
 tb.user_project.controller_u1.TIMER_PULSE
 tb.user_project.controller_u1.WIN
 @22
@@ -74,7 +72,6 @@ tb.user_project.controller_u1.state[2:0]
 @22
 tb.user_project.timer_u1.counter[20:0]
 @28
-tb.user_project.timer_u1.current_state[1:0]
 tb.user_project.timer_u1.pulse_i
 [pattern_trace] 1
 [pattern_trace] 0
