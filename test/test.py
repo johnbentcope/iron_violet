@@ -8,8 +8,8 @@ from cocotb.triggers import ClockCycles
 from cocotb.triggers import FallingEdge, RisingEdge
 from cocotb.triggers import Combine, First, with_timeout
 
+random.seed(1711904269)
 fail_move = random.randint(4,31)
-random.seed(1711903764)
 
 @cocotb.test()
 async def test_simon(dut):
