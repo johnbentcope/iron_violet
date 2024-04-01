@@ -14,6 +14,8 @@ module timer (
   input  wire START_TMR,
   output reg  PULSE
 );
+  `include "constants.vh"
+  
   // internal signals
   reg [1:0]  state;
   reg        pulse_i;
