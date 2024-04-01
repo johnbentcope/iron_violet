@@ -7,7 +7,6 @@
 // Controller
 //============================================================================//
 `define default_netname none
-`include "constants.vh"
 
 module controller (
   input             CLK,
