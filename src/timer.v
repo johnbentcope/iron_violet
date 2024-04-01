@@ -7,7 +7,6 @@
 // Timer
 //============================================================================//
 `default_nettype none
-`include "constants.vh"
 
 module timer (
   input  wire CLK,
