@@ -26,6 +26,7 @@ module controller (
   output reg        LOSE,
   output reg        HS
 );
+  `include "constants.vh"
 
   // internal signals
   localparam [4:0] MAX = 5'b1_1111;
