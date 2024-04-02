@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: © 2023 Uri Shaked <uri@tinytapeout.com>
+d# SPDX-FileCopyrightText: © 2023 Uri Shaked <uri@tinytapeout.com>
 # SPDX-License-Identifier: MIT
 
 import cocotb
@@ -105,7 +105,7 @@ async def bounce_red(dut, end_state, cycles=5):
   
   for _ in range(cycles):
     time.sleep(random.randint(0,10)/1000) # Delay between 0 to 10 ms
-    dut.butt_red.value = not desired_state
+    dut.butt_red.value = not end_state
 
   dut.butt_red.value = end_state
 
@@ -118,7 +118,7 @@ async def bounce_yel(dut, end_state, cycles=5):
   
   for _ in range(cycles):
     time.sleep(random.randint(0,10)/1000) # Delay between 0 to 10 ms
-    dut.butt_yel.value = not desired_state
+    dut.butt_yel.value = not end_state
 
   dut.butt_yel.value = end_state
   
@@ -131,7 +131,7 @@ async def bounce_grn(dut, end_state, cycles=5):
   
   for _ in range(cycles):
     time.sleep(random.randint(0,10)/1000) # Delay between 0 to 10 ms
-    dut.butt_grn.value = not desired_state
+    dut.butt_grn.value = not end_state
 
   dut.butt_grn.value = end_state
 
@@ -144,7 +144,7 @@ async def bounce_blu(dut, end_state, cycles=5):
   
   for _ in range(cycles):
     time.sleep(random.randint(0,10)/1000) # Delay between 0 to 10 ms
-    dut.butt_blu.value = not desired_state
+    dut.butt_blu.value = not end_state
 
   dut.butt_blu.value = end_state
 
