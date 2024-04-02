@@ -96,6 +96,58 @@ async def start_game(dut, cycles=5):
 
   await ClockCycles(dut.clk, 1)
 
+async def bounce_red(dut, end_state, cycles=5):
+  """
+  This coroutine bounces the red button.
+  """
+  
+  dut.butt_red.value = end_state
+  
+  for _ in range(cycles)
+    time.sleep(random.randint(0,10)/1000) # Delay between 0 to 10 ms
+    dut.butt_red.value = not desired_state
+
+  dut.butt_red.value = end_state
+
+async def bounce_yel(dut, end_state, cycles=5):
+  """
+  This coroutine bounces the yellow button.
+  """
+  
+  dut.butt_yel.value = end_state
+  
+  for _ in range(cycles)
+    time.sleep(random.randint(0,10)/1000) # Delay between 0 to 10 ms
+    dut.butt_yel.value = not desired_state
+
+  dut.butt_yel.value = end_state
+  
+async def bounce_grn(dut, end_state, cycles=5):
+  """
+  This coroutine bounces the green button.
+  """
+  
+  dut.butt_grn.value = end_state
+  
+  for _ in range(cycles)
+    time.sleep(random.randint(0,10)/1000) # Delay between 0 to 10 ms
+    dut.butt_grn.value = not desired_state
+
+  dut.butt_grn.value = end_state
+
+async def bounce_blu(dut, end_state, cycles=5):
+  """
+  This coroutine bounces the blue button.
+  """
+  
+  dut.butt_blu.value = end_state
+  
+  for _ in range(cycles)
+    time.sleep(random.randint(0,10)/1000) # Delay between 0 to 10 ms
+    dut.butt_blu.value = not desired_state
+
+  dut.butt_blu.value = end_state
+
 async def play_back_moves(dut, max_moves=10, fail_last=False):
   """
   This coroutine listens to the lamp signals in parallel, stores the sequence,
@@ -154,19 +206,19 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
       move = 3-move
     dut.butt_red.value = dut.butt_yel.value = dut.butt_grn.value = dut.butt_blu.value = 0
     if(move == 0):
-      dut.butt_red.value = 1  # Set the appropriate button high
+      bounce_red(1)  # Set the appropriate button high       
     elif (move == 1):
-      dut.butt_yel.value = 1
+      bounce_yel(1)
     elif (move == 2):
-      dut.butt_grn.value = 1
+      bounce_grn(1)
     elif (move == 3):
-      dut.butt_blu.value = 1
+      bounce_blu(1)
     await ClockCycles(dut.clk, hold_cycles)  # Hold the button for 10 clock cycles
     if(move == 0):
-      dut.butt_red.value = 0  # Set the appropriate button low
+      bounce_red(0)  # Set the appropriate button low
     elif (move == 1):
-      dut.butt_yel.value = 0
+      bounce_yel(0)
     elif (move == 2):
-      dut.butt_grn.value = 0
+      bounce_grn(0)
     elif (move == 3):
-      dut.butt_blu.value = 0
+      bounce_blu(0)
