@@ -206,19 +206,19 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
       move = 3-move
     dut.butt_red.value = dut.butt_yel.value = dut.butt_grn.value = dut.butt_blu.value = 0
     if(move == 0):
-      bounce_red(1)  # Set the appropriate button high       
+      bounce_red(dut, 1)  # Set the appropriate button high       
     elif (move == 1):
-      bounce_yel(1)
+      bounce_yel(dut, 1)
     elif (move == 2):
-      bounce_grn(1)
+      bounce_grn(dut, 1)
     elif (move == 3):
-      bounce_blu(1)
+      bounce_blu(dut, 1)
     await ClockCycles(dut.clk, hold_cycles)  # Hold the button for 10 clock cycles
     if(move == 0):
-      bounce_red(0)  # Set the appropriate button low
+      bounce_red(dut, 0)  # Set the appropriate button low
     elif (move == 1):
-      bounce_yel(0)
+      bounce_yel(dut, 0)
     elif (move == 2):
-      bounce_grn(0)
+      bounce_grn(dut, 0)
     elif (move == 3):
-      bounce_blu(0)
+      bounce_blu(dut, 0)
