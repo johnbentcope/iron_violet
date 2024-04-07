@@ -38,8 +38,19 @@ module controller (
 
   reg good_hold;
   reg last_color;
+  reg clr_turn;
+  reg go_turn;
+  wire timeout_turn;
 
   reg [1:0] stack [0:31];
+
+  timer turn_timer_u1 #(.MAX_COUNT (5))( // TODO CHANGE THIS VALUE
+    .CLK        ( CLK         ),
+    .RST_N      ( RST_N       ),
+    .CLR        ( clr_turn    ),
+    .START_TMR  ( go_turn     ),
+    .PULSE      ( timeout_turn )
+  );
 
   always @(posedge CLK or negedge RST_N) begin
     if (!RST_N) begin
@@ -55,6 +66,8 @@ module controller (
       OUT_ENA    <= 0;
       good_hold  <= 0;
       last_color <= 0;
+      clr_turn   <= 1;
+      go_turn    <= 0;      
     end else begin
       // Pulsed signal default values
       HS          <= 0;
@@ -64,6 +77,8 @@ module controller (
         CTRL_IDLE_S : begin
           i   <= 0;
           cnt <= 0;
+          clr_turn <= 1;
+          go_turn  <= 0;            
           if (START_GAME) state <= CTRL_START_S; // NOISE (start sound)
         end
 
@@ -100,6 +115,8 @@ module controller (
               state <= CTRL_INPUT_S;
               i     <= 0;
               cnt   <= cnt + 1;
+              clr_turn <= 0;
+              go_turn  <= 1;
             end else begin
               i     <= i + 1;
               state <= CTRL_DISPLAY_S;
@@ -109,8 +126,12 @@ module controller (
 
         // TODO: make sure i is reset to 0 before entering this state
         CTRL_INPUT_S : begin
+          if (turn_timeout) begin // took too long to answer
+            state    <= CTRL_LOSE_S;
+            clr_turn <= 1;
+            go_turn  <= 0;
+          else if (IN_VALID) begin
           //assume inputs have been sampled, synced and encoded externally
-          if (IN_VALID) begin
             if (IN == stack[i]) begin
               i                          <= i + 1;
               good_hold                  <= 1;
