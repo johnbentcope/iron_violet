@@ -8,7 +8,7 @@
 //============================================================================//
 `default_nettype none
 
-module timer #(MAX_COUNT = 21'h00_0003)(
+module timer #(MAX_COUNT [20:0] = 21'h00_0003)(
   input  wire CLK,
   input  wire RST_N,
   input  wire CLR,
