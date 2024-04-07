@@ -8,9 +8,10 @@
 //============================================================================//
 `default_nettype none
 
-module timer (
+module timer #(MAX_COUNT = 21'h00_0003)(
   input  wire CLK,
   input  wire RST_N,
+  input  wire CLR,
   input  wire START_TMR,
   output reg  PULSE
 );
@@ -25,9 +26,13 @@ module timer (
 
   always @(posedge CLK or negedge RST_N) begin
     if (!RST_N) begin
-      state <= 0;
+      state         <= 0;
       pulse_i       <= 0;
       counter       <= 0;
+    end else if (CLR) begin
+      state         <= 0;
+      pulse_i       <= 0;
+      counter       <= 0;    
     end else begin
       // Pulsed signal default values
       pulse_i   <= 0;
@@ -42,7 +47,7 @@ module timer (
 
         TIMR_COUNT_S: begin
           counter   <= counter + 1;
-          if (counter == TIMR_MAX_C) begin
+          if (counter == MAX_COUNT) begin
             counter <= 0;
             pulse_i <= 1;
             state   <= TIMR_IDLE_S;
