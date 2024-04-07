@@ -44,7 +44,7 @@ module controller (
 
   reg [1:0] stack [0:31];
 
-  timer turn_timer_u1 #(.MAX_COUNT (5))( // TODO CHANGE THIS VALUE
+  timer #(.MAX_COUNT (5)) turn_timer_u1 ( // TODO CHANGE THIS VALUE
     .CLK        ( CLK         ),
     .RST_N      ( RST_N       ),
     .CLR        ( clr_turn    ),
@@ -130,7 +130,7 @@ module controller (
             state    <= CTRL_LOSE_S;
             clr_turn <= 1;
             go_turn  <= 0;
-          else if (IN_VALID) begin
+          end else if (IN_VALID) begin
           //assume inputs have been sampled, synced and encoded externally
             if (IN == stack[i]) begin
               i                          <= i + 1;
