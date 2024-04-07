@@ -44,7 +44,7 @@ module controller (
 
   reg [1:0] stack [0:31];
 
-  timer #(.MAX_COUNT (5)) turn_timer_u1 ( // TODO CHANGE THIS VALUE
+  timer #(.MAX_COUNT (MAX_TURN_TIME)) turn_timer_u1 ( // TODO CHANGE THIS VALUE
     .CLK        ( CLK         ),
     .RST_N      ( RST_N       ),
     .CLR        ( clr_turn    ),
