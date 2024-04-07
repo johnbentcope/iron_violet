@@ -126,7 +126,7 @@ module controller (
 
         // TODO: make sure i is reset to 0 before entering this state
         CTRL_INPUT_S : begin
-          if (turn_timeout) begin // took too long to answer
+          if (timeout_turn) begin // took too long to answer
             state    <= CTRL_LOSE_S;
             clr_turn <= 1;
             go_turn  <= 0;
