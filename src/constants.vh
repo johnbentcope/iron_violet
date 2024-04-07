@@ -20,7 +20,7 @@ localparam [20:0] TIMR_MAX_C      = 21'h00_0003;
 `ifdef QUICK_PLAY
   localparam [7:0] HALF_SECOND = 8'h19;
   localparam [3:0] QRTR_SECOND = 4'hC;
-`else // humam-time
+`else // human-time
   localparam [24:0] HALF_SECOND = 25'h17D_7840;
-  localparam [21:0] QRTR_SECOND = 22'h5F_5E10;
+  localparam [22:0] QRTR_SECOND = 23'h5F_5E10;
 `endif
