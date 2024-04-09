@@ -79,6 +79,7 @@ module tt_um_iron_violet_simon
   timer timer_u1(
     .CLK        ( clk         ),
     .RST_N      ( rst_n       ),
+    .CLR        ( 1'b0        ),
     .START_TMR  ( timer_go    ),
     .PULSE      ( timer_pulse )
   );
