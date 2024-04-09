@@ -14,5 +14,5 @@ localparam [3:0] CTRL_LOSE_S        = 4'b1000;
 localparam [1:0] TIMR_IDLE_S      = 2'b00;
 localparam [1:0] TIMR_COUNT_S     = 2'b01;
 
-localparam [20:0] TIMR_MAX_C      = 21'h00_0003;
+localparam [20:0] TIMR_MAX_C      = 21'h00_00F0;
 // localparam [20:0] TIMR_MAX_C      = 21'h0F_FFFF;

@@ -15,11 +15,11 @@ fail_move = random.randint(4,31)
 async def test_simon(dut):
   dut._log.info("Start")
   
-  # Our example module doesn't use clock and reset, but we show how to use them here anyway.
   clock = Clock(dut.clk, 10, units="us")
   cocotb.start_soon(clock.start())
 
   # Reset
+
   dut._log.info("Reset")
   dut.ui_in     .value = 0
   dut.uio_in    .value = 0
@@ -32,6 +32,8 @@ async def test_simon(dut):
   dut.butt_blu  .value = 0
   dut.butt_start.value = 0
 
+  # Play a game to completion
+
   await ClockCycles(dut.clk, 1)
 
   await reset_dut(dut)
@@ -43,30 +45,34 @@ async def test_simon(dut):
 
   await ClockCycles(dut.clk, 10)
 
-  await reset_dut(dut, 1000)
+  # Play three games, a short game, a long game,
+  # and a medium length game.
+  # A high score should only be reported on the first two.
+  
+  await reset_dut(dut, 10)
 
   await ClockCycles(dut.clk, 1)
 
-  await start_game(dut, cycles=10)
+  await start_game(dut)
 
   for i in range(12):
     await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 11))
 
-  await ClockCycles(dut.clk, 1000)
+  await ClockCycles(dut.clk, 10)
 
-  await start_game(dut, cycles=15)
+  await start_game(dut)
 
   for i in range(18):
     await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 17))
 
-  await ClockCycles(dut.clk, 1000)
+  await ClockCycles(dut.clk, 10)
 
-  await start_game(dut, cycles=10)
+  await start_game(dut)
 
   for i in range(15):
     await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 14))
 
-  await ClockCycles(dut.clk, 1000)
+  await ClockCycles(dut.clk, 10)
   
   assert True
 
@@ -83,7 +89,7 @@ async def reset_dut(dut, cycles=5):
 
   await ClockCycles(dut.clk, 1)
 
-async def start_game(dut, cycles=5):
+async def start_game(dut, cycles=100):
   """
   This coroutine starts the game. That's it.
   """
@@ -104,7 +110,7 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
   """
   moves = []
   
-  lamp_timeout = 100
+  lamp_timeout = 10000
 
   # Combine triggers for all lamp signals
   all_lamp_edges_rise = First(RisingEdge(dut.lamp_red), RisingEdge(dut.lamp_yel),
