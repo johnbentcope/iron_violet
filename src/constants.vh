@@ -21,11 +21,11 @@ localparam [20:0] TIMR_MAX_C      = 21'h00_00F0;
 `define QUICK_PLAY
 
 `ifdef QUICK_PLAY
-  localparam [7:0] FIVE_SECOND = 8'hFA;
-  localparam [7:0] HALF_SECOND = 8'h19;
-  localparam [3:0] QRTR_SECOND = 4'hC;
+  localparam [24:0] FIVE_SECOND = 25'hFA;
+  localparam [24:0] HALF_SECOND = 25'h19;
+  localparam [24:0] QRTR_SECOND = 25'hC;
 `else // human-time
   localparam [24:0] FIVE_SECOND = 25'hEE6_B280;
   localparam [24:0] HALF_SECOND = 25'h17D_7840;
-  localparam [22:0] QRTR_SECOND = 23'h5F_5E10;
+  localparam [24:0] QRTR_SECOND = 25'h5F_5E10;
 `endif

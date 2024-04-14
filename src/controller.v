@@ -41,7 +41,7 @@ module controller (
 
   reg [1:0] stack [0:31];
 
-  reg [20:0] timer_count;
+  reg [24:0] timer_count;
 
   timer turn_timer_u1 (
     .CLK        ( CLK           ),

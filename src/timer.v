@@ -12,7 +12,7 @@ module timer (
   input  wire CLK,
   input  wire RST_N,
   input  wire CLR,
-  input  wire [20:0] TIMER_VAL,
+  input  wire [24:0] TIMER_VAL,
   input  wire START_TMR,
   output reg  PULSE
 );
@@ -21,8 +21,8 @@ module timer (
   // internal signals
   reg [1:0]  state;
   reg        pulse_i;
-  reg [20:0] counter;
-  reg [20:0] compare;
+  reg [24:0] counter;
+  reg [24:0] compare;
 
   assign PULSE = pulse_i;
 
