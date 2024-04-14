@@ -103,7 +103,7 @@ module controller (
           // TODO: break into 2 substates
           // one to set values, one to implement a delay
           go_turn     <= 1; // Start display timer
-          timer_count <= HALF_SECOND;
+          timer_count <= QRTR_SECOND;
           OUT_ENA     <= 1;
           OUT         <= stack[i];
           state       <= CTRL_DISPLAY2_S;
@@ -117,6 +117,7 @@ module controller (
               state       <= CTRL_INPUT_S;
               i           <= 0;
               cnt         <= cnt + 1;
+
               clr_turn    <= 0;
               timer_count <= FIVE_SECOND;
               go_turn     <= 1;
@@ -159,6 +160,10 @@ module controller (
                 state <= CTRL_ADD_COLOR_S; // Releasing correct button
               end else begin
                 state <= CTRL_INPUT_S;
+                
+                clr_turn    <= 0;
+                timer_count <= FIVE_SECOND;
+                go_turn     <= 1;
               end
             end else begin
               state <= CTRL_LOSE_S; // Releasing wrong button

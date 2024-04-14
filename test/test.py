@@ -16,7 +16,7 @@ fail_move = random.randint(4,31)
 async def test_simon(dut):
   dut._log.info("Start")
   
-  clock = Clock(dut.clk, 10, units="us")
+  clock = Clock(dut.clk, 100, units="us")
   cocotb.start_soon(clock.start())
 
   # Reset
@@ -44,21 +44,21 @@ async def test_simon(dut):
   for i in range(6):
     await play_back_moves(dut, max_moves=(i))
 
-  await ClockCycles(dut.clk, 5000)
+  await ClockCycles(dut.clk, 500000)
 
   await start_game(dut)
 
   for i in range(7):
     await play_back_moves(dut, max_moves=(i))
 
-  await ClockCycles(dut.clk, 5000)
+  await ClockCycles(dut.clk, 500000)
 
   await start_game(dut)
 
   for i in range(5):
     await play_back_moves(dut, max_moves=(i))
 
-  await ClockCycles(dut.clk, 5000)
+  await ClockCycles(dut.clk, 500000)
 
   # # Play three games, a short game, a long game,
   # # and a medium length game.
@@ -177,7 +177,7 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
   """
   moves = []
   
-  lamp_timeout = 10000
+  lamp_timeout = 10000000
 
   # Combine triggers for all lamp signals
   all_lamp_edges_rise = First(RisingEdge(dut.lamp_red), RisingEdge(dut.lamp_yel),
@@ -220,8 +220,8 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
   # Replay the moves with a delay between each
   for i in range(max_moves):
     move = moves[i]
-    hold_cycles = random.randint(3,100);
-    release_cycles = random.randint(3,100);
+    hold_cycles = random.randint(100,10000);
+    release_cycles = random.randint(100,5000);
     await ClockCycles(dut.clk, release_cycles)  # Delay between moves
     if ((fail_last == True) and (i == max_moves-1)):
       move = 3-move

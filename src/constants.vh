@@ -18,14 +18,14 @@ localparam [1:0] TIMR_COUNT_S     = 2'b01;
 localparam [20:0] TIMR_MAX_C      = 21'h00_00F0;
 // localparam [20:0] TIMR_MAX_C      = 21'h0F_FFFF;
 
-`define QUICK_PLAY
+// `define QUICK_PLAY
 
 `ifdef QUICK_PLAY
   localparam [24:0] FIVE_SECOND = 25'hFA;
   localparam [24:0] HALF_SECOND = 25'h19;
-  localparam [24:0] QRTR_SECOND = 25'hC;
+  localparam [24:0] QRTR_SECOND = 25'h0C;
 `else // human-time
-  localparam [24:0] FIVE_SECOND = 25'hEE6_B280;
-  localparam [24:0] HALF_SECOND = 25'h17D_7840;
-  localparam [24:0] QRTR_SECOND = 25'h5F_5E10;
+  localparam [24:0] FIVE_SECOND = 25'h000_C350;    //10KHz time
+  localparam [24:0] HALF_SECOND = 25'h000_1388;
+  localparam [24:0] QRTR_SECOND = 25'h000_09C4;
 `endif
