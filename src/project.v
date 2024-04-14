@@ -23,7 +23,7 @@ module tt_um_iron_violet_simon
 );
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out[7]    = 0;
+  assign uo_out[7:6]  = 0;
   assign uio_out      = 0;
   assign uio_oe       = 0;
 
@@ -40,9 +40,6 @@ module tt_um_iron_violet_simon
   assign uo_out[2] = lamp_ena &  lamp_out[1] & !lamp_out[0];
   assign uo_out[3] = lamp_ena &  lamp_out[1] &  lamp_out[0];
 
-  assign uo_out[5] = timer_pulse;
-  
-  wire timer_pulse;
   wire timer_go;
 
   //add IO debbounce/ sync/encode
@@ -68,10 +65,8 @@ module tt_um_iron_violet_simon
     .OUT          ( lamp_out    ),
     .OUT_ENA      ( lamp_ena    ),
     .RAND         ( rand_num    ),
-    // .TIMER_GO     ( timer_go    ),
-    // .TIMER_PULSE  ( timer_pulse ), //TODO add timer
     .START_GAME   ( ui_in [5]   ), //TODO add sync
-    .LOSE         ( uo_out[6]   ),
+    .LOSE         ( uo_out[5]   ),
     .HS           ( uo_out[4]   )
   );
 
