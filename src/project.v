@@ -71,7 +71,6 @@ module tt_um_iron_violet_simon
     // .TIMER_GO     ( timer_go    ),
     // .TIMER_PULSE  ( timer_pulse ), //TODO add timer
     .START_GAME   ( ui_in [5]   ), //TODO add sync
-    .WIN          (             ),
     .LOSE         ( uo_out[6]   ),
     .HS           ( uo_out[4]   )
   );

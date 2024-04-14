@@ -20,7 +20,6 @@ module controller (
   input  wire [1:0] RAND,
 
   input  wire       START_GAME,
-  output reg        WIN,
   output reg        LOSE,
   output reg        HS
 );
@@ -44,7 +43,7 @@ module controller (
 
   reg [20:0] timer_count;
 
-  timer #(.MAX_COUNT (MAX_TURN_TIME)) turn_timer_u1 ( // TODO CHANGE THIS VALUE
+  timer turn_timer_u1 (
     .CLK        ( CLK           ),
     .RST_N      ( RST_N         ),
     .CLR        ( clr_turn      ),
@@ -59,7 +58,6 @@ module controller (
       i           <= 0;
       cnt         <= 0;
       high_score  <= 0;
-      WIN         <= 0;
       LOSE        <= 0;
       HS          <= 0;
       OUT         <= 3;
