@@ -13,6 +13,7 @@ module timer #(parameter [20:0] MAX_COUNT = 21'h00_0003)(
   input  wire RST_N,
   input  wire CLR,
   input  wire START_TMR,
+  input  wire STOP_TMR,
   output reg  PULSE
 );
   `include "constants.vh"
@@ -47,9 +48,11 @@ module timer #(parameter [20:0] MAX_COUNT = 21'h00_0003)(
 
         TIMR_COUNT_S: begin
           counter   <= counter + 1;
-          if (counter == MAX_COUNT) begin
+          if (counter == MAX_COUNT || STOP_TMR) begin
             counter <= 0;
-            pulse_i <= 1;
+            if(!STOP_TMR) begin
+              pulse_i <= 1;
+            end
             state   <= TIMR_IDLE_S;
           end
         end

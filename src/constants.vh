@@ -8,7 +8,8 @@ localparam [3:0] CTRL_INPUT_S       = 4'b0101;
 localparam [3:0] CTRL_INPUT_HOLD_S  = 4'b0110;
 localparam [3:0] CTRL_WIN_S         = 4'b0111;
 localparam [3:0] CTRL_LOSE_S        = 4'b1000;
-localparam [20:0] MAX_TURN_TIME     = 21'hF_FFFF; 
+// localparam [20:0] MAX_TURN_TIME     = 21'hF_FFFF;
+localparam [20:0] MAX_TURN_TIME     = 21'h0_00FFF;
 
 // timer.v
 localparam [1:0] TIMR_IDLE_S      = 2'b00;

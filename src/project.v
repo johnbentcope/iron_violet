@@ -81,6 +81,7 @@ module tt_um_iron_violet_simon
     .RST_N      ( rst_n       ),
     .CLR        ( 1'b0        ),
     .START_TMR  ( timer_go    ),
+    .STOP_TMR   ( 1'b0        ),
     .PULSE      ( timer_pulse )
   );
   //TODO ad sound nmodule, will get copy of output, hs, win, lose

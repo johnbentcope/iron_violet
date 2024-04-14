@@ -40,15 +40,17 @@ module controller (
   reg last_color;
   reg clr_turn;
   reg go_turn;
+  reg stop_tmr;
   wire timeout_turn;
 
   reg [1:0] stack [0:31];
 
   timer #(.MAX_COUNT (MAX_TURN_TIME)) turn_timer_u1 ( // TODO CHANGE THIS VALUE
-    .CLK        ( CLK         ),
-    .RST_N      ( RST_N       ),
-    .CLR        ( clr_turn    ),
-    .START_TMR  ( go_turn     ),
+    .CLK        ( CLK          ),
+    .RST_N      ( RST_N        ),
+    .CLR        ( clr_turn     ),
+    .START_TMR  ( go_turn      ),
+    .STOP_TMR   ( stop_tmr     ),
     .PULSE      ( timeout_turn )
   );
 
@@ -67,11 +69,14 @@ module controller (
       good_hold  <= 0;
       last_color <= 0;
       clr_turn   <= 1;
-      go_turn    <= 0;      
+      go_turn    <= 0;
+      stop_tmr   <= 0;
     end else begin
       // Pulsed signal default values
       HS          <= 0;
       TIMER_GO    <= 0;
+      stop_tmr    <= 0;
+      go_turn     <= 0;
 
       case (state)
         CTRL_IDLE_S : begin
@@ -110,17 +115,21 @@ module controller (
 
         CTRL_DISPLAY2_S : begin
           if (TIMER_PULSE) begin
-            OUT_ENA <= 0;
+            OUT_ENA     <= 0;
+
             if (i == cnt) begin
-              state <= CTRL_INPUT_S;
-              i     <= 0;
-              cnt   <= cnt + 1;
-              clr_turn <= 0;
-              go_turn  <= 1;
-            end else begin
-              i     <= i + 1;
-              state <= CTRL_DISPLAY_S;
+              state     <= CTRL_INPUT_S;
+              i         <= 0;
+              cnt       <= cnt + 1;
+              clr_turn  <= 0;
+              go_turn   <= 1;
             end
+            
+            else begin
+              i         <= i + 1;
+              state     <= CTRL_DISPLAY_S;
+            end
+
           end
         end
 
@@ -130,14 +139,17 @@ module controller (
             state    <= CTRL_LOSE_S;
             clr_turn <= 1;
             go_turn  <= 0;
-          end else if (IN_VALID) begin
-          //assume inputs have been sampled, synced and encoded externally
+          end
+
+          else if (IN_VALID) begin
             if (IN == stack[i]) begin
+              stop_tmr                   <= 1;
               i                          <= i + 1;
               good_hold                  <= 1;
               if (i == cnt-1) last_color <= 1;
             end
             state <= CTRL_INPUT_HOLD_S;
+
           end
         end
 
@@ -154,10 +166,6 @@ module controller (
               end
             end else begin
               state <= CTRL_LOSE_S; // Releasing wrong button
-              if (i > high_score) begin
-                high_score <= i;
-                HS    <= 1;
-              end
             end
           end
         end
@@ -169,6 +177,10 @@ module controller (
         end
 
         CTRL_LOSE_S : begin
+          if (cnt > high_score) begin
+            high_score <= cnt - 1;
+            HS    <= 1;
+          end
           state <= CTRL_IDLE_S;
         end
 

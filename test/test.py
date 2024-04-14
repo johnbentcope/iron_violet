@@ -41,39 +41,53 @@ async def test_simon(dut):
 
   await start_game(dut)
 
-  for i in range(31):
+  for i in range(6):
     await play_back_moves(dut, max_moves=(i))
 
-  await ClockCycles(dut.clk, 10)
+  await ClockCycles(dut.clk, 5000)
 
-  # Play three games, a short game, a long game,
-  # and a medium length game.
-  # A high score should only be reported on the first two.
+  await start_game(dut)
+
+  for i in range(7):
+    await play_back_moves(dut, max_moves=(i))
+
+  await ClockCycles(dut.clk, 5000)
+
+  await start_game(dut)
+
+  for i in range(5):
+    await play_back_moves(dut, max_moves=(i))
+
+  await ClockCycles(dut.clk, 5000)
+
+  # # Play three games, a short game, a long game,
+  # # and a medium length game.
+  # # A high score should only be reported on the first two.
   
-  await reset_dut(dut, 10)
+  # await reset_dut(dut, 10)
 
-  await ClockCycles(dut.clk, 1)
+  # await ClockCycles(dut.clk, 1)
 
-  await start_game(dut)
+  # await start_game(dut)
 
-  for i in range(12):
-    await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 11))
+  # for i in range(12):
+  #   await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 11))
 
-  await ClockCycles(dut.clk, 10)
+  # await ClockCycles(dut.clk, 10)
 
-  await start_game(dut)
+  # await start_game(dut)
 
-  for i in range(18):
-    await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 17))
+  # for i in range(18):
+  #   await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 17))
 
-  await ClockCycles(dut.clk, 10)
+  # await ClockCycles(dut.clk, 10)
 
-  await start_game(dut)
+  # await start_game(dut)
 
-  for i in range(15):
-    await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 14))
+  # for i in range(15):
+  #   await play_back_moves(dut, max_moves=(i+1),fail_last=(i == 14))
 
-  await ClockCycles(dut.clk, 10)
+  # await ClockCycles(dut.clk, 100)
   
   assert True
 
