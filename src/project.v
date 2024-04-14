@@ -68,22 +68,14 @@ module tt_um_iron_violet_simon
     .OUT          ( lamp_out    ),
     .OUT_ENA      ( lamp_ena    ),
     .RAND         ( rand_num    ),
-    .TIMER_GO     ( timer_go    ),
-    .TIMER_PULSE  ( timer_pulse ), //TODO add timer
+    // .TIMER_GO     ( timer_go    ),
+    // .TIMER_PULSE  ( timer_pulse ), //TODO add timer
     .START_GAME   ( ui_in [5]   ), //TODO add sync
-    .WIN          (    ),
+    .WIN          (             ),
     .LOSE         ( uo_out[6]   ),
     .HS           ( uo_out[4]   )
   );
 
-  timer timer_u1(
-    .CLK        ( clk         ),
-    .RST_N      ( rst_n       ),
-    .CLR        ( 1'b0        ),
-    .START_TMR  ( timer_go    ),
-    .STOP_TMR   ( 1'b0        ),
-    .PULSE      ( timer_pulse )
-  );
   //TODO ad sound nmodule, will get copy of output, hs, win, lose
   // and will drive spreaker output
 

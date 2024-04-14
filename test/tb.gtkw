@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Sun Apr 14 00:03:18 2024
+[*] Sun Apr 14 00:39:56 2024
 [*]
 [dumpfile] "/home/yoda/repos/iron_violet/test/tb.vcd"
-[dumpfile_mtime] "Sun Apr 14 00:03:16 2024"
-[dumpfile_size] 1222842
+[dumpfile_mtime] "Sun Apr 14 00:37:56 2024"
+[dumpfile_size] 1164386
 [savefile] "/home/yoda/repos/iron_violet/test/tb.gtkw"
 [timestart] 0
 [size] 1920 1145
 [pos] 1919 0
-*-34.827774 24970000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-35.609451 108470000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tb.
 [treeopen] tb.user_project.
 [treeopen] tb.user_project.controller_u1.
@@ -87,7 +87,6 @@ tb.user_project.controller_u1.LOSE
 tb.user_project.controller_u1.OUT[1:0]
 tb.user_project.controller_u1.OUT_ENA
 tb.user_project.controller_u1.RAND[1:0]
-tb.user_project.controller_u1.TIMER_PULSE
 tb.user_project.controller_u1.WIN
 @22
 tb.user_project.controller_u1.cnt[4:0]
@@ -100,21 +99,15 @@ tb.user_project.controller_u1.good_hold
 tb.user_project.controller_u1.last_color
 @200
 -Timer
-@28
-tb.user_project.timer_u1.state[1:0]
-@22
-tb.user_project.timer_u1.counter[20:0]
-@28
-tb.user_project.timer_u1.pulse_i
-@200
 -Turn Timer
 @28
 tb.user_project.controller_u1.turn_timer_u1.START_TMR
-tb.user_project.controller_u1.turn_timer_u1.STOP_TMR
 tb.user_project.controller_u1.turn_timer_u1.state[1:0]
 @22
 tb.user_project.controller_u1.turn_timer_u1.counter[20:0]
 @28
 tb.user_project.controller_u1.turn_timer_u1.pulse_i
+@22
+tb.user_project.controller_u1.turn_timer_u1.compare[20:0]
 [pattern_trace] 1
 [pattern_trace] 0

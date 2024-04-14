@@ -18,8 +18,6 @@ module controller (
   output reg        OUT_ENA,
 
   input  wire [1:0] RAND,
-  output reg        TIMER_GO,
-  input  wire       TIMER_PULSE,
 
   input  wire       START_GAME,
   output reg        WIN,
@@ -40,43 +38,42 @@ module controller (
   reg last_color;
   reg clr_turn;
   reg go_turn;
-  reg stop_tmr;
   wire timeout_turn;
 
   reg [1:0] stack [0:31];
 
+  reg [20:0] timer_count;
+
   timer #(.MAX_COUNT (MAX_TURN_TIME)) turn_timer_u1 ( // TODO CHANGE THIS VALUE
-    .CLK        ( CLK          ),
-    .RST_N      ( RST_N        ),
-    .CLR        ( clr_turn     ),
-    .START_TMR  ( go_turn      ),
-    .STOP_TMR   ( stop_tmr     ),
-    .PULSE      ( timeout_turn )
+    .CLK        ( CLK           ),
+    .RST_N      ( RST_N         ),
+    .CLR        ( clr_turn      ),
+    .TIMER_VAL  ( timer_count   ),
+    .START_TMR  ( go_turn       ),
+    .PULSE      ( timeout_turn  )
   );
 
   always @(posedge CLK or negedge RST_N) begin
     if (!RST_N) begin
-      state      <= 0;
-      i          <= 0;
-      TIMER_GO   <= 0;
-      cnt        <= 0;
-      high_score <= 0;
-      WIN        <= 0;
-      LOSE       <= 0;
-      HS         <= 0;
-      OUT        <= 3;
-      OUT_ENA    <= 0;
-      good_hold  <= 0;
-      last_color <= 0;
-      clr_turn   <= 1;
-      go_turn    <= 0;
-      stop_tmr   <= 0;
+      state       <= 0;
+      i           <= 0;
+      cnt         <= 0;
+      high_score  <= 0;
+      WIN         <= 0;
+      LOSE        <= 0;
+      HS          <= 0;
+      OUT         <= 3;
+      OUT_ENA     <= 0;
+      good_hold   <= 0;
+      last_color  <= 0;
+      clr_turn    <= 1;
+      go_turn     <= 0;
+      timer_count <= 0;
     end else begin
       // Pulsed signal default values
       HS          <= 0;
-      TIMER_GO    <= 0;
-      stop_tmr    <= 0;
       go_turn     <= 0;
+      clr_turn    <= 0;
 
       case (state)
         CTRL_IDLE_S : begin
@@ -107,22 +104,24 @@ module controller (
         CTRL_DISPLAY_S : begin
           // TODO: break into 2 substates
           // one to set values, one to implement a delay
-          TIMER_GO <= 1;
-          OUT_ENA  <= 1;
-          OUT      <= stack[i];
-          state    <= CTRL_DISPLAY2_S;
+          go_turn     <= 1; // Start display timer
+          timer_count <= HALF_SECOND;
+          OUT_ENA     <= 1;
+          OUT         <= stack[i];
+          state       <= CTRL_DISPLAY2_S;
         end
 
         CTRL_DISPLAY2_S : begin
-          if (TIMER_PULSE) begin
+          if (timeout_turn) begin
             OUT_ENA     <= 0;
 
             if (i == cnt) begin
-              state     <= CTRL_INPUT_S;
-              i         <= 0;
-              cnt       <= cnt + 1;
-              clr_turn  <= 0;
-              go_turn   <= 1;
+              state       <= CTRL_INPUT_S;
+              i           <= 0;
+              cnt         <= cnt + 1;
+              clr_turn    <= 0;
+              timer_count <= FIVE_SECOND;
+              go_turn     <= 1;
             end
             
             else begin
@@ -138,12 +137,11 @@ module controller (
           if (timeout_turn) begin // took too long to answer
             state    <= CTRL_LOSE_S;
             clr_turn <= 1;
-            go_turn  <= 0;
           end
 
           else if (IN_VALID) begin
             if (IN == stack[i]) begin
-              stop_tmr                   <= 1;
+              clr_turn                   <= 1;
               i                          <= i + 1;
               good_hold                  <= 1;
               if (i == cnt-1) last_color <= 1;

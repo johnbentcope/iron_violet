@@ -8,12 +8,12 @@
 //============================================================================//
 `default_nettype none
 
-module timer #(parameter [20:0] MAX_COUNT = 21'h00_0003)(
+module timer (
   input  wire CLK,
   input  wire RST_N,
   input  wire CLR,
+  input  wire [20:0] TIMER_VAL,
   input  wire START_TMR,
-  input  wire STOP_TMR,
   output reg  PULSE
 );
   `include "constants.vh"
@@ -22,6 +22,7 @@ module timer #(parameter [20:0] MAX_COUNT = 21'h00_0003)(
   reg [1:0]  state;
   reg        pulse_i;
   reg [20:0] counter;
+  reg [20:0] compare;
 
   assign PULSE = pulse_i;
 
@@ -30,10 +31,12 @@ module timer #(parameter [20:0] MAX_COUNT = 21'h00_0003)(
       state         <= 0;
       pulse_i       <= 0;
       counter       <= 0;
+      compare       <= 0;
     end else if (CLR) begin
       state         <= 0;
       pulse_i       <= 0;
-      counter       <= 0;    
+      counter       <= 0;
+      compare       <= 0;
     end else begin
       // Pulsed signal default values
       pulse_i   <= 0;
@@ -41,6 +44,7 @@ module timer #(parameter [20:0] MAX_COUNT = 21'h00_0003)(
       case (state)
         TIMR_IDLE_S: begin
           if (START_TMR) begin
+            compare <= TIMER_VAL;
             state   <= TIMR_COUNT_S;
             counter <= counter + 1;
           end
@@ -48,11 +52,9 @@ module timer #(parameter [20:0] MAX_COUNT = 21'h00_0003)(
 
         TIMR_COUNT_S: begin
           counter   <= counter + 1;
-          if (counter == MAX_COUNT || STOP_TMR) begin
+          if (counter == compare) begin
             counter <= 0;
-            if(!STOP_TMR) begin
-              pulse_i <= 1;
-            end
+            pulse_i <= 1;
             state   <= TIMR_IDLE_S;
           end
         end
