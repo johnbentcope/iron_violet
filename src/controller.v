@@ -139,6 +139,8 @@ module controller (
           end
 
           else if (IN_VALID) begin
+            OUT_ENA     <= 1;
+            OUT         <= stack[i];
             if (IN == stack[i]) begin
               clr_turn                   <= 1;
               i                          <= i + 1;
@@ -152,6 +154,8 @@ module controller (
 
         CTRL_INPUT_HOLD_S : begin
           if (!IN_VALID) begin // Don't transition until released
+
+            OUT_ENA     <= 0;
             if (good_hold) begin
               good_hold <= 0;
 
