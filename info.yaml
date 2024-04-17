@@ -16,7 +16,6 @@ project:
   # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
   source_files:
     - "project.v"
-    - "stack.v"
     - "oscillator.v"
     - "io_sync.v"
     - "controller.v"
