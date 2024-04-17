@@ -17,7 +17,7 @@ module rng (
 
   always @(posedge CLK or negedge RST_N) begin
     if (!RST_N) RAND <= 0;
-    else        RAND <= out + 1;
+    else        RAND <= RAND + 1;
   end
 
 endmodule : rng
