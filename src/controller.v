@@ -6,6 +6,7 @@
 //============================================================================//
 // Controller
 //============================================================================//
+
 `define default_netname none
 
 module controller (
@@ -44,12 +45,12 @@ module controller (
   reg [24:0] timer_count;
 
   timer turn_timer_u1 (
-    .CLK        ( CLK           ),
-    .RST_N      ( RST_N         ),
-    .CLR        ( clr_turn      ),
-    .TIMER_VAL  ( timer_count   ),
-    .START_TMR  ( go_turn       ),
-    .PULSE      ( timeout_turn  )
+    .CLK        (CLK),
+    .RST_N      (RST_N),
+    .CLR        (clr_turn),
+    .TIMER_VAL  (timer_count),
+    .START_TMR  (go_turn),
+    .PULSE      (timeout_turn)
   );
 
   always @(posedge CLK or negedge RST_N) begin
