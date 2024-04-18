@@ -67,10 +67,10 @@ module oscillator (
 
   always @(*) begin
     case (NOTE_SEL)
-      2'b0    : AUDIO = EN ? clk_fsharp5 : 0; 
-      2'b1    : AUDIO = EN ? clk_a5      : 0;
-      2'b2    : AUDIO = EN ? clk_csharp6 : 0;
-      2'b3    : AUDIO = EN ? clk_e6      : 0;
+      2'h0    : AUDIO = EN ? clk_fsharp5 : 0; 
+      2'h1    : AUDIO = EN ? clk_a5      : 0;
+      2'h2    : AUDIO = EN ? clk_csharp6 : 0;
+      2'h3    : AUDIO = EN ? clk_e6      : 0;
       default : AUDIO = 0; 
     endcase
   end
