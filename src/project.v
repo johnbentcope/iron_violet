@@ -66,7 +66,7 @@ module tt_um_iron_violet_simon (
   );
 
   controller controller_u1 (
-    .CLK          (clk_),
+    .CLK          (clk),
     .RST_N        (rst_n),
     .IN           (in_sync),
     .IN_VALID     (in_valid),
