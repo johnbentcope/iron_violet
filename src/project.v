@@ -52,7 +52,7 @@ module tt_um_iron_violet_simon (
   );
 
   io_sync io_sync_u1 (
-    .CLK      (clk_10khz),
+    .CLK      (clk),
     .RST_N    (rst_n),
     .SYNC_IN  (ui_in[3:0]),
     .SYNC_OUT (in_sync),
@@ -60,13 +60,13 @@ module tt_um_iron_violet_simon (
   );
 
   rng rng_u1 (
-    .CLK   (clk_10khz),
+    .CLK   (clk),
     .RST_N (rst_n),
     .RAND  (rand_num)
   );
 
   controller controller_u1 (
-    .CLK          (clk_10khz),
+    .CLK          (clk_),
     .RST_N        (rst_n),
     .IN           (in_sync),
     .IN_VALID     (in_valid),
