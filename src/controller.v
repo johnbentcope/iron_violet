@@ -124,10 +124,20 @@ module controller (
             end
             
             else begin
-              i         <= i + 1;
-              state     <= CTRL_DISPLAY_S;
+              i           <= i + 1;
+
+              clr_turn    <= 0;
+              timer_count <= EGTH_SECOND;
+              go_turn     <= 1;
+              state       <= CTRL_DISPLAY3_S;
             end
 
+          end
+        end
+
+        CTRL_DISPLAY3_S : begin
+          if (timeout_turn) begin
+              state     <= CTRL_DISPLAY_S;
           end
         end
 
