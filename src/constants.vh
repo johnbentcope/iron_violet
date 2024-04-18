@@ -1,13 +1,21 @@
 // controller.v
-localparam [3:0] CTRL_IDLE_S        = 4'b0000;
-localparam [3:0] CTRL_START_S       = 4'b0001;
-localparam [3:0] CTRL_ADD_COLOR_S   = 4'b0010;
-localparam [3:0] CTRL_DISPLAY_S     = 4'b0011;
-localparam [3:0] CTRL_DISPLAY2_S    = 4'b0100;
-localparam [3:0] CTRL_INPUT_S       = 4'b0101;
-localparam [3:0] CTRL_INPUT_HOLD_S  = 4'b0110;
-localparam [3:0] CTRL_WIN_S         = 4'b0111;
-localparam [3:0] CTRL_LOSE_S        = 4'b1000;
+localparam [4:0] CTRL_IDLE_S        = 5'b00000;
+localparam [4:0] CTRL_START_S       = 5'b00001;
+localparam [4:0] CTRL_ADD_COLOR_S   = 5'b00010;
+localparam [4:0] CTRL_DISPLAY_S     = 5'b00011;
+localparam [4:0] CTRL_DISPLAY2_S    = 5'b00100;
+localparam [4:0] CTRL_DISPLAY3_S    = 5'b00101;
+localparam [4:0] CTRL_INPUT_S       = 5'b00110;
+localparam [4:0] CTRL_INPUT_HOLD_S  = 5'b00111;
+localparam [4:0] CTRL_ENDGAME_S     = 5'b01000;
+localparam [4:0] CTRL_WIN1_S        = 5'b01001;
+localparam [4:0] CTRL_WIN2_S        = 5'b01010;
+localparam [4:0] CTRL_WIN3_S        = 5'b01011;
+localparam [4:0] CTRL_WIN4_S        = 5'b01100;
+localparam [4:0] CTRL_LOSE1_S       = 5'b01101;
+localparam [4:0] CTRL_LOSE2_S       = 5'b01110;s
+localparam [4:0] CTRL_LOSE3_S       = 5'b01111;
+localparam [4:0] CTRL_LOSE4_S       = 5'b10000;
 localparam [20:0] MAX_TURN_TIME     = 21'h0_00FFF;
 
 // timer.v
