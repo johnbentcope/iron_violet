@@ -44,7 +44,7 @@ async def test_simon(dut):
   for i in range(6):
     await play_back_moves(dut, max_moves=(i))
 
-  await ClockCycles(dut.clk, 500000)
+  await ClockCycles(dut.clk, 100000)
 
   # await start_game(dut)
 
@@ -53,12 +53,12 @@ async def test_simon(dut):
 
   # await ClockCycles(dut.clk, 500000)
 
-  # await start_game(dut)
+  await start_game(dut)
 
-  # for i in range(5):
-  #   await play_back_moves(dut, max_moves=(i))
+  for i in range(5):
+    await play_back_moves(dut, max_moves=(i))
 
-  # await ClockCycles(dut.clk, 500000)
+  await ClockCycles(dut.clk, 100000)
 
   # # Play three games, a short game, a long game,
   # # and a medium length game.

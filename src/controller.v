@@ -28,7 +28,7 @@ module controller (
   // internal signals
   localparam [4:0] MAX = 5'b1_1111;
 
-  reg [3:0] state;
+  reg [4:0] state;
   reg [4:0] i;          // Current historic turn to display
   reg [4:0] cnt;        // Current turn count
   reg [5:0] high_score;
@@ -92,7 +92,7 @@ module controller (
             //game over out of memory
             //NOISE happy sound
             //maybe special thing if gates
-            state <= CTRL_WIN_S;
+            state <= CTRL_WIN1_S;
           end else begin
             stack[cnt] <= RAND;
             state      <= CTRL_DISPLAY_S;
@@ -144,7 +144,7 @@ module controller (
         // TODO: make sure i is reset to 0 before entering this state
         CTRL_INPUT_S : begin
           if (timeout_turn) begin // took too long to answer
-            state    <= CTRL_LOSE_S;
+            state    <= CTRL_ENDGAME_S;
             clr_turn <= 1;
           end
 
@@ -180,23 +180,103 @@ module controller (
                 go_turn     <= 1;
               end
             end else begin
-              state <= CTRL_LOSE_S; // Releasing wrong button
+              state <= CTRL_ENDGAME_S; // Releasing wrong button
             end
+          end
+        end
+
+        CTRL_ENDGAME_S : begin
+          state <= CTRL_LOSE1_S;
+          if (cnt > high_score) begin
+            high_score <= cnt - 1;
+            HS         <= 1;
+            state <= CTRL_WIN1_S;
           end
         end
 
         // TODO: should we just have 'win' for the round and lose for the whole game (maybe change name to end)
         // TODO: should win/lose be one state? check score agains highscore
-        CTRL_WIN_S : begin
-          state <= CTRL_LOSE_S;
-        end
-
-        CTRL_LOSE_S : begin
-          if (cnt > high_score) begin
-            high_score <= cnt - 1;
-            HS    <= 1;
+        CTRL_WIN1_S : begin
+          OUT_ENA     <= 1;
+          OUT         <= 2'b00;
+          go_turn     <= 1; // Start display timer
+          timer_count <= QRTR_SECOND;
+          clr_turn    <= 0;
+          if (timeout_turn) begin
+            state <= CTRL_WIN2_S;
           end
-          state <= CTRL_IDLE_S;
+        end
+        CTRL_WIN2_S : begin
+          OUT_ENA     <= 1;
+          OUT         <= 2'b01;
+          go_turn     <= 1; // Start display timer
+          timer_count <= QRTR_SECOND;
+          clr_turn    <= 0;
+          if (timeout_turn) begin
+            state <= CTRL_WIN3_S;
+          end
+        end
+        CTRL_WIN3_S : begin
+          OUT_ENA     <= 1;
+          OUT         <= 2'b10;
+          go_turn     <= 1; // Start display timer
+          timer_count <= QRTR_SECOND;
+          clr_turn    <= 0;
+          if (timeout_turn) begin
+            state <= CTRL_WIN4_S;
+          end
+        end
+        CTRL_WIN4_S : begin
+          OUT_ENA     <= 1;
+          OUT         <= 2'b11;
+          go_turn     <= 1; // Start display timer
+          timer_count <= QRTR_SECOND;
+          clr_turn    <= 0;
+          if (timeout_turn) begin
+            OUT_ENA     <= 0;
+            state <= CTRL_IDLE_S;
+          end
+        end
+        CTRL_LOSE1_S : begin
+          OUT_ENA     <= 1;
+          OUT         <= 2'b11;
+          go_turn     <= 1; // Start display timer
+          timer_count <= QRTR_SECOND;
+          clr_turn    <= 0;
+          if (timeout_turn) begin
+            state <= CTRL_LOSE2_S;
+          end
+        end
+        CTRL_LOSE2_S : begin
+          OUT_ENA     <= 1;
+          OUT         <= 2'b10;
+          go_turn     <= 1; // Start display timer
+          timer_count <= QRTR_SECOND;
+          clr_turn    <= 0;
+          if (timeout_turn) begin
+            state <= CTRL_LOSE3_S;
+          end
+        end
+        CTRL_LOSE3_S : begin
+          OUT_ENA     <= 1;
+          OUT         <= 2'b01;
+          go_turn     <= 1; // Start display timer
+          timer_count <= QRTR_SECOND;
+          clr_turn    <= 0;
+          if (timeout_turn) begin
+            state <= CTRL_LOSE4_S;
+          end
+        end
+        CTRL_LOSE4_S : begin
+          OUT_ENA     <= 1;
+          OUT         <= 2'b00;
+          go_turn     <= 1; // Start display timer
+          timer_count <= QRTR_SECOND;
+          clr_turn    <= 0;
+          if (timeout_turn) begin
+            OUT_ENA     <= 0;
+            state <= CTRL_IDLE_S;
+          end
         end
 
         default : begin
