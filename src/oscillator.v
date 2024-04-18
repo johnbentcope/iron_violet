@@ -14,7 +14,7 @@ module oscillator (
   input  wire       RST_N,    // Reset_n - active low
   input  wire       EN,       // Enable
   input  wire [1:0] NOTE_SEL, // Note selection
-  output reg        AUDIO     // Oscillator output
+  output wire       AUDIO     // Oscillator output
 );
   //-----------------------------
   // note:        Hz : Cyc@50Mhz
