@@ -52,7 +52,7 @@ module tt_um_iron_violet_simon (
   );
 
   io_sync io_sync_u1 (
-    .CLK      (clk),
+    .CLK      (clk_10khz),
     .RST_N    (rst_n),
     .SYNC_IN  (ui_in[3:0]),
     .SYNC_OUT (in_sync),
@@ -60,13 +60,13 @@ module tt_um_iron_violet_simon (
   );
 
   rng rng_u1 (
-    .CLK   (clk),
+    .CLK   (clk_10khz),
     .RST_N (rst_n),
     .RAND  (rand_num)
   );
 
   controller controller_u1 (
-    .CLK          (clk),
+    .CLK          (clk_10khz),
     .RST_N        (rst_n),
     .IN           (in_sync),
     .IN_VALID     (in_valid),
@@ -78,7 +78,12 @@ module tt_um_iron_violet_simon (
     .HS           (uo_out[4])
   );
 
-  //TODO ad sound nmodule, will get copy of output, hs, win, lose
-  // and will drive spreaker output
+  /*oscillator oscillator_u1 (
+    .CLK      (clk),  
+    .RST_N    (rst_n),
+    .EN       (//TODO),      
+    .NOTE_SEL (//TODO),
+    .AUDIO    (//TODO)    
+  );*/
 
 endmodule : tt_um_iron_violet_simon
