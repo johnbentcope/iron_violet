@@ -21,6 +21,7 @@ project:
     - "controller.v"
     - "rng.v"
     - "timer.v"
+    - "clk_div.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:

@@ -39,6 +39,17 @@ module tt_um_iron_violet_simon (
   assign uo_out[3] = lamp_ena &  lamp_out[1] &  lamp_out[0];
 
   wire timer_go;
+  
+  wire clk_10khz;
+
+  clk_div #(
+    .FREQ_IN  (50_000_000),
+    .FREQ_OUT (10_000)
+  ) clk_div_u1 (
+    .CLK      (clk),
+    .RST_N    (rst_n),
+    .CLK_OUT  (clk_10khz)
+  );
 
   io_sync io_sync_u1 (
     .CLK      (clk),
