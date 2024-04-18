@@ -6,15 +6,16 @@
 //============================================================================//
 // Timer
 //============================================================================//
+
 `default_nettype none
 
 module timer (
-  input  wire CLK,
-  input  wire RST_N,
-  input  wire CLR,
+  input  wire        CLK,
+  input  wire        RST_N,
+  input  wire        CLR,
   input  wire [24:0] TIMER_VAL,
-  input  wire START_TMR,
-  output reg  PULSE
+  input  wire        START_TMR,
+  output reg         PULSE
 );
   `include "constants.vh"
   
@@ -28,18 +29,18 @@ module timer (
 
   always @(posedge CLK or negedge RST_N) begin
     if (!RST_N) begin
-      state         <= 0;
-      pulse_i       <= 0;
-      counter       <= 0;
-      compare       <= 0;
+      state   <= 0;
+      pulse_i <= 0;
+      counter <= 0;
+      compare <= 0;
     end else if (CLR) begin
-      state         <= 0;
-      pulse_i       <= 0;
-      counter       <= 0;
-      compare       <= 0;
+      state   <= 0;
+      pulse_i <= 0;
+      counter <= 0;
+      compare <= 0;
     end else begin
       // Pulsed signal default values
-      pulse_i   <= 0;
+      pulse_i <= 0;
 
       case (state)
         TIMR_IDLE_S: begin
@@ -60,7 +61,7 @@ module timer (
         end
 
         default : begin
-          state <= TIMR_IDLE_S;
+          state     <= TIMR_IDLE_S;
         end
       endcase
     end

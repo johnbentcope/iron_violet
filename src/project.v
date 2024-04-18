@@ -3,15 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+//============================================================================//
+// Top-Level
+//============================================================================//
+
 `define default_netname none
 
-module tt_um_iron_violet_simon
-// #(
-  // parameter CLK_FREQ    = 50_000_000_000, // 50 billion mHz aka 50 MHz
-  // parameter NUM_BUTTONS = 4,
-  // parameter DEPTH       = 16
-// )
-(
+module tt_um_iron_violet_simon (
   input  wire [7:0] ui_in,    // Dedicated inputs
   output wire [7:0] uo_out,   // Dedicated outputs
   input  wire [7:0] uio_in,   // IOs: Input path
@@ -41,38 +39,51 @@ module tt_um_iron_violet_simon
   assign uo_out[3] = lamp_ena &  lamp_out[1] &  lamp_out[0];
 
   wire timer_go;
+  
+  wire clk_10khz;
 
-  //add IO debbounce/ sync/encode
-  io_sync io_sync_u1(
-    .clk(clk),
-    .rst_n(rst_n),
-    .in(ui_in[3:0]),
-    .out(in_sync),
-    .valid(in_valid)
+  clk_div #(
+    .FREQ_IN  (50_000_000),
+    .FREQ_OUT (10_000)
+  ) clk_div_u1 (
+    .CLK      (clk),
+    .RST_N    (rst_n),
+    .CLK_OUT  (clk_10khz)
   );
 
-  rng rng_u1(
-    .clk(clk),
-    .rst_n(rst_n),
-    .out(rand_num)
+  io_sync io_sync_u1 (
+    .CLK      (clk),
+    .RST_N    (rst_n),
+    .SYNC_IN  (ui_in[3:0]),
+    .SYNC_OUT (in_sync),
+    .VALID    (in_valid)
   );
 
-  controller controller_u1(
-    .CLK          ( clk         ),
-    .RST_N        ( rst_n       ),
-    .IN           ( in_sync     ),
-    .IN_VALID     ( in_valid    ),
-    .OUT          ( lamp_out    ),
-    .OUT_ENA      ( lamp_ena    ),
-    .RAND         ( rand_num    ),
-    .START_GAME   ( ui_in [5]   ), //TODO add sync
-    .LOSE         ( uo_out[5]   ),
-    .HS           ( uo_out[4]   )
+  rng rng_u1 (
+    .CLK   (clk),
+    .RST_N (rst_n),
+    .RAND  (rand_num)
   );
 
-  //TODO ad sound nmodule, will get copy of output, hs, win, lose
-  // and will drive spreaker output
+  controller controller_u1 (
+    .CLK          (clk),
+    .RST_N        (rst_n),
+    .IN           (in_sync),
+    .IN_VALID     (in_valid),
+    .OUT          (lamp_out),
+    .OUT_ENA      (lamp_ena),
+    .RAND         (rand_num),
+    .START_GAME   (ui_in [5]),
+    .LOSE         (uo_out[5]),
+    .HS           (uo_out[4])
+  );
 
-  //TODO use gate level modules to improve existing code
+  /*oscillator oscillator_u1 (
+    .CLK      (clk),  
+    .RST_N    (rst_n),
+    .EN       (//TODO),      
+    .NOTE_SEL (//TODO),
+    .AUDIO    (//TODO)    
+  );*/
 
 endmodule : tt_um_iron_violet_simon
