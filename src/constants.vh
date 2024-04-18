@@ -24,8 +24,10 @@ localparam [20:0] TIMR_MAX_C      = 21'h00_00F0;
   localparam [24:0] FIVE_SECOND = 25'hFA;
   localparam [24:0] HALF_SECOND = 25'h19;
   localparam [24:0] QRTR_SECOND = 25'h0C;
+  localparam [24:0] EGTH_SECOND = 25'h06;
 `else // human-time
   localparam [24:0] FIVE_SECOND = 25'h000_C350;    //10KHz time
   localparam [24:0] HALF_SECOND = 25'h000_1388;
   localparam [24:0] QRTR_SECOND = 25'h000_09C4;
+  localparam [24:0] EGTH_SECOND = 25'h000_04E2;
 `endif
