@@ -22,8 +22,8 @@ module tt_um_iron_violet_simon (
 
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out[7:6]    = 0;
-  assign uio_out      = 0;
-  assign uio_oe       = 0;
+  assign uio_out        = 0;
+  assign uio_oe         = 0;
 
   wire [1:0] in_sync;
   wire       in_valid;
@@ -73,9 +73,7 @@ module tt_um_iron_violet_simon (
     .OUT          (lamp_out),
     .OUT_ENA      (lamp_ena),
     .RAND         (rand_num),
-    .START_GAME   (ui_in [5]),
-    .LOSE         (uo_out[5]),
-    .HS           (uo_out[4])
+    .START_GAME   (ui_in [5])
   );
 
 endmodule : tt_um_iron_violet_simon

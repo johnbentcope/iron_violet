@@ -23,7 +23,7 @@ module io_sync (
       VALID       <= 0;
     end else begin
       SYNC_OUT    <= {(SYNC_IN[3] | SYNC_IN[2]), (SYNC_IN[3] | SYNC_IN[1])};
-      VALID       <= SYNC_IN[3] | SYNC_IN[2] | SYNC_IN[1] | SYNC_IN[0];
+      VALID       <=   SYNC_IN[3] | SYNC_IN[2] |  SYNC_IN[1] | SYNC_IN[0];
     end
   end
 

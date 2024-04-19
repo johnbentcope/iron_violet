@@ -20,30 +20,31 @@ module controller (
 
   input  wire [1:0] RAND,
 
-  input  wire       START_GAME,
-  output reg        LOSE,
-  output reg        HS
+  input  wire       START_GAME
 );
   `include "constants.vh"
 
   // internal signals
   localparam [4:0] MAX = 5'b1_1111;
 
-  reg [4:0] state;
-  reg [4:0] i;          // Current historic turn to display
-  reg [4:0] cnt;        // Current turn count
-  reg [5:0] high_score;
+  // General game utilities
+  reg [4:0] state;        // FSM state
+  reg [4:0] i;            // Current sequence item to display
+  reg [4:0] cnt;          // Current turn count
+  reg [4:0] high_score;   // High score across all games since reset
+  reg [1:0] stack [0:31]; // Color sequence memory
 
-  reg good_hold;
-  reg last_color;
-  reg clr_turn;
-  reg go_turn;
-  wire timeout_turn;
+  // Helpers for press-and-hold
+  reg good_hold;          // Track, during button hold, if it's a good button
+  reg last_color;         // Track, during button hold, if it's the last color in a sequence
 
-  reg [1:0] stack [0:31];
+  // Timer handles
+  reg clr_turn;           // Timer reset handle
+  reg go_turn;            // Timer start handle
+  wire timeout_turn;      // Timer timeout handle
+  reg [24:0] timer_count; // Timer programmable count value handle
 
-  reg [24:0] timer_count;
-
+  // Programmable timer for lamp displays and end-game timeouts
   timer turn_timer_u1 (
     .CLK        (CLK),
     .RST_N      (RST_N),
@@ -59,8 +60,6 @@ module controller (
       i           <= 0;
       cnt         <= 0;
       high_score  <= 0;
-      LOSE        <= 0;
-      HS          <= 0;
       OUT         <= 3;
       OUT_ENA     <= 0;
       good_hold   <= 0;
@@ -70,16 +69,16 @@ module controller (
       timer_count <= 0;
     end else begin
       // Pulsed signal default values
-      HS          <= 0;
       go_turn     <= 0;
       clr_turn    <= 0;
 
+      // Idle after reset/end-game
       case (state)
         CTRL_IDLE_S : begin
           i   <= 0;
           cnt <= 0;
           clr_turn <= 1;
-          go_turn  <= 0;            
+          go_turn  <= 0;
           if (START_GAME) state <= CTRL_START_S; // NOISE (start sound)
         end
 
@@ -89,10 +88,9 @@ module controller (
 
         CTRL_ADD_COLOR_S : begin
           last_color <= 0;
+
+          // If it's time to add a color and there's no room left, end-game
           if (cnt == MAX-1) begin
-            //game over out of memory
-            //NOISE happy sound
-            //maybe special thing if gates
             state <= CTRL_WIN1_S;
           end else begin
             stack[cnt] <= RAND;
@@ -101,12 +99,12 @@ module controller (
         end
 
         CTRL_DISPLAY_S : begin
-          // TODO: break into 2 substates
-          // one to set values, one to implement a delay
-          go_turn     <= 1; // Start display timer
-          timer_count <= QRTR_SECOND;
           OUT_ENA     <= 1;
           OUT         <= stack[i];
+
+          go_turn     <= 1; // Start display timer
+          timer_count <= HALF_SECOND;
+
           state       <= CTRL_DISPLAY2_S;
         end
 
@@ -114,35 +112,39 @@ module controller (
           if (timeout_turn) begin
             OUT_ENA     <= 0;
 
+            // Set up input state with end-game timeout
             if (i == cnt) begin
-              state       <= CTRL_INPUT_S;
               i           <= 0;
               cnt         <= cnt + 1;
 
               clr_turn    <= 0;
-              timer_count <= FIVE_SECOND;
               go_turn     <= 1;
+              timer_count <= FIVE_SECOND;
+
+              state       <= CTRL_INPUT_S;
             end
-            
+
+            // Set up mid-lamp delay
             else begin
               i           <= i + 1;
 
               clr_turn    <= 0;
               timer_count <= EGTH_SECOND;
               go_turn     <= 1;
+
               state       <= CTRL_DISPLAY3_S;
             end
 
           end
         end
 
+        // Wait a beat between displaying colors
         CTRL_DISPLAY3_S : begin
           if (timeout_turn) begin
               state     <= CTRL_DISPLAY_S;
           end
         end
 
-        // TODO: make sure i is reset to 0 before entering this state
         CTRL_INPUT_S : begin
           if (timeout_turn) begin // took too long to answer
             state    <= CTRL_ENDGAME_S;
@@ -152,12 +154,18 @@ module controller (
           else if (IN_VALID) begin
             OUT_ENA     <= 1;
             OUT         <= stack[i];
+
+            // Check if button pressed is correct
             if (IN == stack[i]) begin
-              clr_turn                   <= 1;
               i                          <= i + 1;
+
+              clr_turn                   <= 1;
               good_hold                  <= 1;
+
               if (i == cnt-1) last_color <= 1;
             end
+
+            // Transition to button hold state
             state <= CTRL_INPUT_HOLD_S;
 
           end
@@ -168,20 +176,27 @@ module controller (
 
             OUT_ENA     <= 0;
             if (good_hold) begin
+
               good_hold <= 0;
 
+              // Releasing correct button at end of a sequence
               if (last_color) begin
                 i     <= 0;
-                state <= CTRL_ADD_COLOR_S; // Releasing correct button
+
+                state <= CTRL_ADD_COLOR_S;
+
+              // Releasing correct button before the end of a sequence
               end else begin
-                state <= CTRL_INPUT_S;
-                
                 clr_turn    <= 0;
                 timer_count <= FIVE_SECOND;
                 go_turn     <= 1;
+
+                state <= CTRL_INPUT_S;
               end
+
+            // Releasing wrong button
             end else begin
-              state <= CTRL_ENDGAME_S; // Releasing wrong button
+              state <= CTRL_ENDGAME_S;
             end
           end
         end
@@ -190,13 +205,10 @@ module controller (
           state <= CTRL_LOSE1_S;
           if (cnt > high_score) begin
             high_score <= cnt - 1;
-            HS         <= 1;
             state <= CTRL_WIN1_S;
           end
         end
 
-        // TODO: should we just have 'win' for the round and lose for the whole game (maybe change name to end)
-        // TODO: should win/lose be one state? check score agains highscore
         CTRL_WIN1_S : begin
           OUT_ENA     <= 1;
           OUT         <= 2'b00;
@@ -207,16 +219,18 @@ module controller (
             state <= CTRL_WIN2_S;
           end
         end
+
         CTRL_WIN2_S : begin
           OUT_ENA     <= 1;
           OUT         <= 2'b01;
-          go_turn     <= 1; // Start display timer
+          go_turn     <= 1;
           timer_count <= QRTR_SECOND;
           clr_turn    <= 0;
           if (timeout_turn) begin
             state <= CTRL_WIN3_S;
           end
         end
+
         CTRL_WIN3_S : begin
           OUT_ENA     <= 1;
           OUT         <= 2'b10;
@@ -227,6 +241,7 @@ module controller (
             state <= CTRL_WIN4_S;
           end
         end
+
         CTRL_WIN4_S : begin
           OUT_ENA     <= 1;
           OUT         <= 2'b11;
@@ -238,6 +253,7 @@ module controller (
             state <= CTRL_IDLE_S;
           end
         end
+
         CTRL_LOSE1_S : begin
           OUT_ENA     <= 1;
           OUT         <= 2'b11;
@@ -248,6 +264,7 @@ module controller (
             state <= CTRL_LOSE2_S;
           end
         end
+
         CTRL_LOSE2_S : begin
           OUT_ENA     <= 1;
           OUT         <= 2'b10;
@@ -258,6 +275,7 @@ module controller (
             state <= CTRL_LOSE3_S;
           end
         end
+
         CTRL_LOSE3_S : begin
           OUT_ENA     <= 1;
           OUT         <= 2'b01;
@@ -268,6 +286,7 @@ module controller (
             state <= CTRL_LOSE4_S;
           end
         end
+
         CTRL_LOSE4_S : begin
           OUT_ENA     <= 1;
           OUT         <= 2'b00;

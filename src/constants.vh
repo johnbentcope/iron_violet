@@ -22,6 +22,8 @@ localparam [1:0] TIMR_IDLE_S      = 2'b00;
 localparam [1:0] TIMR_COUNT_S     = 2'b01;
 localparam [20:0] TIMR_MAX_C      = 21'h00_00F0;
 
+// `define QUICK_PLAY
+
 `ifdef QUICK_PLAY
   localparam [24:0] FIVE_SECOND = 25'hFA;
   localparam [24:0] HALF_SECOND = 25'h19;
