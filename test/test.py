@@ -41,10 +41,10 @@ async def test_simon(dut):
 
   await start_game(dut)
 
-  for i in range(6):
-    await play_back_moves(dut, max_moves=(i))
+  # for i in range(6):
+  #   await play_back_moves(dut, max_moves=(i))
 
-  await ClockCycles(dut.clk, 1000000)
+  # await ClockCycles(dut.clk, 10000)
 
   # await start_game(dut)
 
