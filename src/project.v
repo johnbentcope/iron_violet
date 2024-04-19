@@ -21,7 +21,7 @@ module tt_um_iron_violet_simon (
 );
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out[7]    = 0;
+  assign uo_out[7:6]    = 0;
   assign uio_out      = 0;
   assign uio_oe       = 0;
 
@@ -76,14 +76,6 @@ module tt_um_iron_violet_simon (
     .START_GAME   (ui_in [5]),
     .LOSE         (uo_out[5]),
     .HS           (uo_out[4])
-  );
-
-  oscillator oscillator_u1 (
-    .CLK      (clk),  
-    .RST_N    (rst_n),
-    .EN       (lamp_ena),      
-    .NOTE_SEL (lamp_out),
-    .AUDIO    (uo_out[6])    
   );
 
 endmodule : tt_um_iron_violet_simon

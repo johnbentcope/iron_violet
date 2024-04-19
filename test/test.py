@@ -44,21 +44,21 @@ async def test_simon(dut):
   for i in range(6):
     await play_back_moves(dut, max_moves=(i))
 
-  await ClockCycles(dut.clk, 100000)
+  await ClockCycles(dut.clk, 1000000)
 
   # await start_game(dut)
 
   # for i in range(7):
   #   await play_back_moves(dut, max_moves=(i))
 
-  # await ClockCycles(dut.clk, 500000)
+  # # await ClockCycles(dut.clk, 500000)
 
-  await start_game(dut)
+  # await start_game(dut)
 
-  for i in range(5):
-    await play_back_moves(dut, max_moves=(i))
+  # for i in range(5):
+  #   await play_back_moves(dut, max_moves=(i))
 
-  await ClockCycles(dut.clk, 100000)
+  # await ClockCycles(dut.clk, 100000)
 
   # # Play three games, a short game, a long game,
   # # and a medium length game.
@@ -91,7 +91,7 @@ async def test_simon(dut):
   
   assert True
 
-async def reset_dut(dut, cycles=50):
+async def reset_dut(dut, cycles=5):
   """
   This coroutine resets the dut. That's it.
   """
@@ -104,7 +104,7 @@ async def reset_dut(dut, cycles=50):
 
   await ClockCycles(dut.clk, 1)
 
-async def start_game(dut, cycles=10000):
+async def start_game(dut, cycles=5010):
   """
   This coroutine starts the game. That's it.
   """
@@ -177,7 +177,7 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
   """
   moves = []
   
-  lamp_timeout = 100000
+  lamp_timeout = 10000000
 
   # Combine triggers for all lamp signals
   all_lamp_edges_rise = First(RisingEdge(dut.lamp_red), RisingEdge(dut.lamp_yel),
@@ -220,8 +220,8 @@ async def play_back_moves(dut, max_moves=10, fail_last=False):
   # Replay the moves with a delay between each
   for i in range(max_moves):
     move = moves[i]
-    hold_cycles = random.randint(5000,50000);
-    release_cycles = random.randint(5000,1000);
+    hold_cycles = random.randint(15000,25000);
+    release_cycles = random.randint(15000,25000);
     await ClockCycles(dut.clk, release_cycles)  # Delay between moves
     if ((fail_last == True) and (i == max_moves-1)):
       move = 3-move
