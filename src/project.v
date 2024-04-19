@@ -21,7 +21,7 @@ module tt_um_iron_violet_simon (
 );
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out[7:6]  = 0;
+  assign uo_out[7]    = 0;
   assign uio_out      = 0;
   assign uio_oe       = 0;
 
@@ -52,7 +52,7 @@ module tt_um_iron_violet_simon (
   );
 
   io_sync io_sync_u1 (
-    .CLK      (clk),
+    .CLK      (clk_10khz),
     .RST_N    (rst_n),
     .SYNC_IN  (ui_in[3:0]),
     .SYNC_OUT (in_sync),
@@ -60,13 +60,13 @@ module tt_um_iron_violet_simon (
   );
 
   rng rng_u1 (
-    .CLK   (clk),
+    .CLK   (clk_10khz),
     .RST_N (rst_n),
     .RAND  (rand_num)
   );
 
   controller controller_u1 (
-    .CLK          (clk),
+    .CLK          (clk_10khz),
     .RST_N        (rst_n),
     .IN           (in_sync),
     .IN_VALID     (in_valid),
@@ -78,12 +78,12 @@ module tt_um_iron_violet_simon (
     .HS           (uo_out[4])
   );
 
-  /*oscillator oscillator_u1 (
+  oscillator oscillator_u1 (
     .CLK      (clk),  
     .RST_N    (rst_n),
-    .EN       (//TODO),      
-    .NOTE_SEL (//TODO),
-    .AUDIO    (//TODO)    
-  );*/
+    .EN       (lamp_ena),      
+    .NOTE_SEL (lamp_out),
+    .AUDIO    (uo_out[6])    
+  );
 
 endmodule : tt_um_iron_violet_simon
